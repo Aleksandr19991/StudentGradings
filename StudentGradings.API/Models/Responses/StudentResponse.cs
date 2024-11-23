@@ -6,4 +6,5 @@ public class StudentResponse
     public string Name { get; set; }
     public string LastName { get; set; }
     public float Grade { get; set; }
+    public CourseResponse Course { get; set; }
 }

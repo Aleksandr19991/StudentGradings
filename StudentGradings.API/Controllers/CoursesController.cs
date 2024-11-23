@@ -15,29 +15,29 @@ public class CoursesController : ControllerBase
         return Ok(addedCourseId);
     }
 
-    // GET: api/<CoursesController>
-    [HttpGet]
-    public ActionResult<List<CourseResponse>> GetCourses()
-    {
-        var course = new List<CourseResponse>();
-        return course.ToList();
-    }
-
     // GET api/<CoursesController>
-    [HttpGet("api/courses/:id/student")]
-    public ActionResult<List<StudentResponse>> GetStudentsByCoursesId([FromRoute] Guid id)
+    [HttpGet("api/courses/id/student")]
+    public ActionResult<List<CourseWithStudents>> GetStudentsByCoursesId([FromRoute] Guid id)
     {
-        var student = new List<StudentResponse>();
+        var student = new List<CourseWithStudents>();
         return student.ToList();
     }
 
     // GET api/<CoursesController>
-    [HttpGet("api/courses/:id/grade")]
-    public ActionResult<List<CourseResponse>> GetGradesByCoursesId([FromRoute] Guid id)
+    [HttpGet("api/courses/id/grade")]
+    public ActionResult<List<StudentResponse>> GetGradesByCoursesId([FromRoute] Guid id)
     {
-        var grade = new CourseResponse();
-        return Ok(grade);
+        var gradeCourse = new StudentResponse();
+        return Ok(gradeCourse);
     }
+   
+    //// GET api/<CoursesController>
+    //[HttpGet("api/courses/id/grade")]
+    //public ActionResult<List<CourseWithStudents>> GetGradesByAllCoursesId([FromRoute] Guid id)
+    //{
+    //    var grades = new CourseWithStudents();
+    //    return Ok(grades);
+    //}
 
     // PATCH api/<UsersController>
     [HttpPatch("{id}/deactivate")]

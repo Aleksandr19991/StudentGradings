@@ -6,7 +6,7 @@ using StudentGradings.API.Models.Responses;
 
 namespace StudentGradings.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/users")]
 [ApiController]
 public class UsersController : ControllerBase
 {
@@ -34,9 +34,9 @@ public class UsersController : ControllerBase
 
     // GET api/<UsersController>/5
     [HttpGet, Authorize(":id/courses")]
-    public ActionResult<List<UserWithCourseResponse>> GetCoursesByUserId([FromRoute] Guid id)
+    public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
-        var course = new List<UserWithCourseResponse>();
+        var course = new List<UserWithCoursesResponse>();
         return course.ToList();
     }
 

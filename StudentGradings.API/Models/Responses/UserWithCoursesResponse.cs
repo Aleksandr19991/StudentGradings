@@ -1,6 +1,6 @@
 ﻿namespace StudentGradings.API.Models.Responses;
 
-public class UserWithCourseResponse
+public class UserWithCoursesResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
