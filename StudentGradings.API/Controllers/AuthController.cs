@@ -1,40 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using StudentGradings.API.Models.Responses;
+using StudentGradings.API.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace StudentGradings.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+
 public class AuthController : ControllerBase
 {
-    // GET: api/<AuthController>
-    [HttpGet]
-    public IEnumerable<string> Get()
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] LoginModel user)
     {
-        return new string[] { "value1", "value2" };
-    }
-
-    // GET api/<AuthController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
-    {
-        return "value";
-    }
-
-    // POST api/<AuthController>
-    [HttpPost]
-    public void Post([FromBody] string value)
-    {
-    }
-
-    // PUT api/<AuthController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<AuthController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        if (user is null)
+        {
+            return BadRequest("Invalid client request");
+        }
+        if (user.UserName == "johndoe" && user.Password == "def@123") // сверяем с бд запрос
+        {
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345")); // константы
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokeOptions = new JwtSecurityToken(
+            issuer: "https://localhost:5001",// константы
+            audience: "https://localhost:5001",// константы
+            claims: new List<Claim>(),
+            expires: DateTime.Now.AddMinutes(5),
+            signingCredentials: signinCredentials
+            );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return Ok(new AuthenticatedResponse { Token = tokenString });
+        }
+        return Unauthorized();
     }
 }

@@ -19,11 +19,12 @@ public class UsersController : ControllerBase
     }
 
     // "api/users/login"
-    [HttpPost("login")]
-    public IActionResult LogIn([FromBody] LoginModel model)
-    {
-        return Ok();
-    }
+    //[HttpPost("login")]
+    //public ActionResult<AuthenticatedResponse> LogIn([FromBody] LoginRequest request)
+    //{
+    //    var login =
+    //    return Ok();
+    //}
 
     [HttpPatch("{id}/role")]
     public ActionResult<UserResponse> ChangeRoleByUserId([FromRoute] Guid id)
@@ -33,7 +34,7 @@ public class UsersController : ControllerBase
     }
 
     // GET api/<UsersController>/5
-    [HttpGet, Authorize(":id/courses")]
+    [HttpGet, Authorize("{id}/courses")]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
         var course = new List<UserWithCoursesResponse>();

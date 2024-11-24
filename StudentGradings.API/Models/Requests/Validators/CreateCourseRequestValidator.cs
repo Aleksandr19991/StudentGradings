@@ -8,6 +8,5 @@ public class CreateCourseRequestValidator: AbstractValidator<CreateCourseRequest
     {
         RuleFor(model => model.Name).MaximumLength(60).MinimumLength(4);
         RuleFor(model => model.Description).MaximumLength(200).MinimumLength(20);
-        RuleFor(model => model.Hours).NotNull();
     }
 }
