@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StudentGradings.CORE\StudentGradings.CORE.csproj" />
     <ProjectReference Include="..\StudentGradings.DAL\StudentGradings.DAL.csproj" />
   </ItemGroup>
 

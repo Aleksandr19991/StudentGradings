@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 
 namespace StudentGradings.API.Controllers;
@@ -9,25 +10,25 @@ public class CoursesController : ControllerBase
 {
     // POST api/<CoursesController>
     [HttpPost]
-    public ActionResult<Guid> CreateCourse([FromBody] string value)
+    public ActionResult<Guid> CreateCourse(CreateCourseRequest request)
     {
         var addedCourseId = Guid.NewGuid();
         return Ok(addedCourseId);
     }
 
     // GET api/<CoursesController>
-    [HttpGet("api/courses/id/student")]
-    public ActionResult<List<CourseWithStudents>> GetStudentsByCoursesId([FromRoute] Guid id)
+    [HttpGet("api/courses/id/users")]
+    public ActionResult<List<CourseWithUsersResponse>> GetUsersByCoursesId([FromRoute] Guid id)
     {
-        var student = new List<CourseWithStudents>();
+        var student = new List<CourseWithUsersResponse>();
         return student.ToList();
     }
 
     // GET api/<CoursesController>
-    [HttpGet("api/courses/id/grade")]
-    public ActionResult<List<StudentResponse>> GetGradesByCoursesId([FromRoute] Guid id)
+    [HttpGet("api/gradeBook/id/courses")]
+    public ActionResult<List<GradeBookResponse>> GetGradesByCoursesId([FromRoute] Guid id)
     {
-        var gradeCourse = new StudentResponse();
+        var gradeCourse = new GradeBookResponse();
         return Ok(gradeCourse);
     }
    

@@ -1,40 +1,59 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudentGradings.API.Models;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
+using StudentGradings.BLL;
 
 namespace StudentGradings.API.Controllers;
 
-[Route("api/users")]
 [ApiController]
+[Route("api/users")]
+
 public class UsersController : ControllerBase
 {
+    private UserService _userService;
+
+    public UsersController()
+    {
+        _userService = new UserService();
+    }
+
     // POST api/<UsersController>
     [HttpPost]
-    public ActionResult<Guid> RegisterUser([FromBody] string value)
+    public ActionResult<Guid> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var addedUserId = Guid.NewGuid();
         return Ok(addedUserId);
     }
 
-    // "api/users/login"
-    //[HttpPost("login")]
-    //public ActionResult<AuthenticatedResponse> LogIn([FromBody] LoginRequest request)
-    //{
-    //    var login =
-    //    return Ok();
-    //}
-
-    [HttpPatch("{id}/role")]
-    public ActionResult<UserResponse> ChangeRoleByUserId([FromRoute] Guid id)
+    //"api/users/login"
+    [HttpPost("login")]
+    public ActionResult<string> LogIn([FromBody] LoginRequest request)
     {
-        var role = new UserResponse();
-        return Ok(role);
+        if (request is null)
+        {
+            return BadRequest("Invalid client request");
+        }
+        var token = _userService.Authenticate(request.Email, request.Password);
+        if (token != null)
+        {
+            return Ok(token);
+        }
+        else
+        {
+            return Unauthorized();
+        }
     }
 
+    //[HttpPatch("{id}/role")]
+    //public ActionResult<UserResponse> ChangeRoleByUserId([FromRoute] Guid id)
+    //{
+    //    var role = new UserResponse();
+    //    return Ok(role);
+    //}
+
     // GET api/<UsersController>/5
-    [HttpGet, Authorize("{id}/courses")]
+    [HttpGet, Authorize("courses")]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
         var course = new List<UserWithCoursesResponse>();

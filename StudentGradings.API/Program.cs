@@ -1,9 +1,10 @@
-using FluentValidation.AspNetCore;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using StudentGradings.API.Models.Requests.Validators;
+using StudentGradings.CORE;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +21,9 @@ builder.Services.AddAuthentication(opt =>
          ValidateAudience = true,
          ValidateLifetime = true,
          ValidateIssuerSigningKey = true,
-         ValidIssuer = "https://localhost:5001",
-         ValidAudience = "https://localhost:5001",
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+         ValidIssuer = ConstantAuth.Issuer,
+         ValidAudience = ConstantAuth.Audience,
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key))
      };
  });
 

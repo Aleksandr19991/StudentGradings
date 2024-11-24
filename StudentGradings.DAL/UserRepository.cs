@@ -5,29 +5,40 @@ namespace StudentGradings.DAL;
 
 public class UserRepository
 {
-    Context context = new();
+    private Context _context;
 
+    public UserRepository()
+    {
+        _context = new Context();
+    }
+   
     public void AddUser(UserDto user)
     {
-        context.Users.Add(user);
-        context.SaveChanges();
+        _context.Users.Add(user);
+        _context.SaveChanges();
     }
 
     public void UpdateUser(UserDto user) 
     {
-        context.Users.Update(user);
-        context.SaveChanges();
+        _context.Users.Update(user);
+        _context.SaveChanges();
+    }
+
+    public UserDto? GetUserByEmail(string email)
+    {
+        var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+        return user;
     }
 
     public UserDto GetUserRoleByUserId(Guid userId) 
     {
-        var role = context.Users.Include(u => u.Role).Where(r => r.Id == userId).FirstOrDefault();
+        var role = _context.Users.Include(u => u.Role).Where(r => r.Id == userId).FirstOrDefault();
         return role;
     }
 
     public IEnumerable<CourseDto> GetCoursesByUserId(Guid userId)
     {
-        var courses = context.Users.Include(u => u.Courses).Where(c => c.Id == userId).FirstOrDefault();
-        return context.Courses.ToList();
+        var courses = _context.Users.Include(u => u.Courses).Where(c => c.Id == userId).FirstOrDefault();
+        return _context.Courses.ToList();
     }
 }
