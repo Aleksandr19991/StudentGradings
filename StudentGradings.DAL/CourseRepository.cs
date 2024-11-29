@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.DAL
 {
-    public class CourseRepository
+    public class CourseRepository : ICourseRepository
     {
         private Context _context;
 
