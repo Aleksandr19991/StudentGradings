@@ -11,7 +11,7 @@ public class Context : DbContext
     public DbSet<GradeBookDto> GradeBooks { get; set; }
     public Context()
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

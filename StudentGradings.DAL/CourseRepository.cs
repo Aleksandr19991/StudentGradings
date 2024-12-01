@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.DAL
 {
-    public class CourseRepository : ICourseRepository
+    public class CourseRepository
     {
         private Context _context;
 
@@ -25,32 +24,26 @@ namespace StudentGradings.DAL
             _context.SaveChanges();
         }
 
-        public IEnumerable<UserDto> GetUsersByCourseId(Guid courseId) //teacher
+        public IEnumerable<UserDto> GetUsersByCourseId(Guid courseId)
         {
             var students = _context.Courses.Include(c => c.Users).Where(c => c.Id == courseId).FirstOrDefault();
             return _context.Users.ToList();
         }
 
-        public GradeBookDto GetGradeByCourseId(Guid courseId) //student
+        public IEnumerable<CourseDto> GetGradesByCourseId(Guid courseId)
         {
-            var grade = _context.GradeBooks.Include(g => g.Grade).Where(c => c.Id == courseId).FirstOrDefault();
-            return grade;
-        }
-
-        public IEnumerable<CourseDto> GetGradesByAllCourses(Guid courseId) //student
-        {
-            var grades = _context.GradeBooks.Include(c => c.Grade).Where(g => g.Id == courseId).FirstOrDefault();
+            var grades = _context.GradeBooks.Include(g => g.Grade).Where(c => c.Id == courseId).ToList();
             return _context.Courses.ToList();
         }
 
-        public void AddGradeByCourseId(Guid courseId) //teacher
+        public void AddGradeByCourseId(GradeBookDto gradeBook, Guid courseId)
         {
             var grade = _context.GradeBooks.Include(s => s.Grade).Where(c => c.Id == courseId).SingleOrDefault();
             _context.GradeBooks.Add(grade);
             _context.SaveChanges();
         }
 
-        public void UpdateGradeByCourseId(Guid courseId) //teacher
+        public void UpdateGradeByCourseId(GradeBookDto gradeBook, Guid courseId)
         {
             var grade = _context.GradeBooks.Include(s => s.Grade).Where(c => c.Id == courseId).SingleOrDefault();
             _context.GradeBooks.Update(grade);

@@ -36,7 +36,6 @@ public class ExceptionMiddleware
             Message = exception.Message
         }.ToString());
     }
-
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";

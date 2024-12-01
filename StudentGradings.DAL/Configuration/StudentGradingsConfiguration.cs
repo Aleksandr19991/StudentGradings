@@ -2,9 +2,9 @@
 
 internal static class StudentGradingsConfiguration
 {
-    public static void StudentGradingsConfiguration()
-    {
+    //public static void StudentGradingsConfiguration()
+    //{
 
 
-    }
+    //}
 }

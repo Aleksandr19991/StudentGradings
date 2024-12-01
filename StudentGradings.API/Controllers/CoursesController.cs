@@ -17,7 +17,7 @@ public class CoursesController : ControllerBase
     }
 
     // GET api/<CoursesController>
-    [HttpGet("api/courses/id/users")]
+    [HttpGet("{id}/users")]
     public ActionResult<List<CourseWithUsersResponse>> GetUsersByCoursesId([FromRoute] Guid id)
     {
         var student = new List<CourseWithUsersResponse>();
@@ -25,7 +25,7 @@ public class CoursesController : ControllerBase
     }
 
     // GET api/<CoursesController>
-    [HttpGet("api/gradeBook/id/courses")]
+    [HttpGet("{id}/grades")]
     public ActionResult<List<GradeBookResponse>> GetGradesByCoursesId([FromRoute] Guid id)
     {
         var gradeCourse = new GradeBookResponse();

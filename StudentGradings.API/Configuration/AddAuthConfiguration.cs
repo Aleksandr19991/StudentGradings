@@ -9,24 +9,24 @@ internal static class AddAuthConfiguration
 {
     internal static void AddAuth(this IServiceCollection services)
     {
-           services
-           .AddAuthentication(opt =>
+        services
+        .AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+       .AddJwtBearer(options =>
+       {
+           options.TokenValidationParameters = new TokenValidationParameters
            {
-              opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-              opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-           })
-          .AddJwtBearer(options =>
-          {
-              options.TokenValidationParameters = new TokenValidationParameters
-              {
-                 ValidateIssuer = true,
-                 ValidateAudience = true,
-                 ValidateLifetime = true,
-                 ValidateIssuerSigningKey = true,
-                 ValidIssuer = ConstantAuth.Issuer,
-                 ValidAudience = ConstantAuth.Audience,
-                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key))
-              };
-          });
+               ValidateIssuer = true,
+               ValidateAudience = true,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               ValidIssuer = ConstantAuth.Issuer,
+               ValidAudience = ConstantAuth.Audience,
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key))
+           };
+       });
     }
 }

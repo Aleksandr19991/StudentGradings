@@ -45,15 +45,8 @@ public class UsersController : ControllerBase
         }
     }
 
-    //[HttpPatch("{id}/role")]
-    //public ActionResult<UserResponse> ChangeRoleByUserId([FromRoute] Guid id)
-    //{
-    //    var role = new UserResponse();
-    //    return Ok(role);
-    //}
-
     // GET api/<UsersController>/5
-    [HttpGet, Authorize("courses")]
+    [HttpGet ("{id}/courses")]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
         var course = new List<UserWithCoursesResponse>();

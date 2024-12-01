@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using StudentGradings.BLL.Mappings;
+using StudentGradings.BLL.Models;
 using StudentGradings.CORE;
 using StudentGradings.DAL;
+using StudentGradings.DAL.Models.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -27,7 +29,7 @@ public class UserService
         _mapper = new Mapper(config);
     }
 
-    public string? Authenticate (string email, string password)
+    public string? Authenticate(string email, string password)
     {
         var user = _userRepository.GetUserByEmail(email);
 
@@ -46,5 +48,31 @@ public class UserService
             return tokenString;
         }
         else return null;
+    }
+
+    public void AddUser(UserModelBll user)
+    {
+        var userId = _mapper.Map<UserDto>(user);
+        _userRepository.AddUser(userId);
+    }
+
+    public void UpdateUser(UserModelBll user)
+    {
+        var userId = _mapper.Map<UserDto>(user);
+        _userRepository.UpdateUser(userId);
+    }
+
+    public UserModelBll GetUserRoleByUserId(Guid userId)
+    {
+        var role = _userRepository.GetUserRoleByUserId(userId);
+        var result = _mapper.Map<UserModelBll>(role);
+        return result;
+    }
+
+    public IEnumerable<UserModelBll> GetCoursesByUserId(Guid userId)
+    {
+        var courses = _userRepository.GetCoursesByUserId(userId);
+        var result = _mapper.Map<IEnumerable<UserModelBll>>(courses);
+        return result;
     }
 }

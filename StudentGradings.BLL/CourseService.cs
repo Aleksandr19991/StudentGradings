@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
-using StudentGradings.BLL.Exeptions;
 using StudentGradings.BLL.Mappings;
 using StudentGradings.BLL.Models;
 using StudentGradings.DAL;
+using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.BLL;
 
 public class CourseService
 {
-    public CourseRepository CourseRepository { get; set; }
+    private CourseRepository _courseRepository;
 
     private Mapper _mapper;
 
     public CourseService()
     {
-        CourseRepository = new();
+        _courseRepository = new();
 
         var config = new MapperConfiguration(
             cfg =>
@@ -23,21 +23,28 @@ public class CourseService
             });
         _mapper = new Mapper(config);
     }
+    public UserModelBll GetUsersByCourseId(Guid courseId)
+    {
+        var users = _courseRepository.GetUsersByCourseId(courseId);
+        var result = _mapper.Map<UserModelBll>(users);
+        return result;
+    }
+    public GradeBookModelBll GetGradesByCourseId(Guid courseId)
+    {
+        var grades = _courseRepository.GetGradesByCourseId(courseId);
+        var result = _mapper.Map<GradeBookModelBll>(grades);
+        return result;
+    }
 
-    //public GradeBookModelBll GetGradeByCourseId(Guid courseId)
-    //{
-    //    var grade = CourseRepository.GetGradeByCourseId(courseId);
+    public void AddGradeByCourseId(GradeBookModelBll gradeBook, Guid courseId)
+    {
+        var grade = _mapper.Map<GradeBookDto>(gradeBook);
+        _courseRepository.AddGradeByCourseId(grade,courseId);
+    }
 
-    //    if (grade == null)
-    //    {
-    //        throw new EntityNotFoundException($"Grade with id{courseId} not found");
-    //    }
-
-    //    var newGrade = new Grade()
-    //    {
-    //        Grade = grade,
-    //    };
-
-    //    return grade;
-    //}
+    public void UpdateGradeByCourseId(GradeBookModelBll gradeBook, Guid courseId)
+    {
+        var grade = _mapper.Map<GradeBookDto>(gradeBook);
+        _courseRepository.UpdateGradeByCourseId(grade, courseId);
+    }
 }

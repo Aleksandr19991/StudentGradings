@@ -1,10 +1,10 @@
 ﻿namespace StudentGradings.DAL.Models.Dtos;
 
-public class GradeBookDto
+public class GroupDto
 {
     public Guid Id { get; set; }
-    public float Grade { get; set; }
+    public string Name { get; set; }
     public UserDto User { get; set; }
     public CourseDto Course { get; set; }
-    public IEnumerable<GroupDto> Groups { get; set; }
+    public GradeBookDto GradeBook { get; set; }
 }

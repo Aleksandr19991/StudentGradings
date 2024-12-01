@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.DAL;
 
-public class UserRepository
+public class UserRepository : IUserRepository
 {
     private Context _context;
 
@@ -11,14 +12,14 @@ public class UserRepository
     {
         _context = new Context();
     }
-   
+
     public void AddUser(UserDto user)
     {
         _context.Users.Add(user);
         _context.SaveChanges();
     }
 
-    public void UpdateUser(UserDto user) 
+    public void UpdateUser(UserDto user)
     {
         _context.Users.Update(user);
         _context.SaveChanges();
@@ -30,7 +31,7 @@ public class UserRepository
         return user;
     }
 
-    public UserDto GetUserRoleByUserId(Guid userId) 
+    public UserDto GetUserRoleByUserId(Guid userId)
     {
         var role = _context.Users.Include(u => u.Role).Where(r => r.Id == userId).FirstOrDefault();
         return role;
