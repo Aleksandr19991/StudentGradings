@@ -16,6 +16,14 @@ public class CoursesController : ControllerBase
         return Ok(addedCourseId);
     }
 
+    // POST api/<CoursesController>
+    [HttpPost]
+    public ActionResult<Guid> AddGradeByCourseId(AddGradeRequest request)
+    {
+        var addedGrade = Guid.NewGuid();
+        return Ok(addedGrade);
+    }
+
     // GET api/<CoursesController>
     [HttpGet("{id}/users")]
     public ActionResult<List<CourseWithUsersResponse>> GetUsersByCoursesId([FromRoute] Guid id)
@@ -31,14 +39,6 @@ public class CoursesController : ControllerBase
         var gradeCourse = new GradeBookResponse();
         return Ok(gradeCourse);
     }
-   
-    //// GET api/<CoursesController>
-    //[HttpGet("api/courses/id/grade")]
-    //public ActionResult<List<CourseWithStudents>> GetGradesByAllCoursesId([FromRoute] Guid id)
-    //{
-    //    var grades = new CourseWithStudents();
-    //    return Ok(grades);
-    //}
 
     // PATCH api/<UsersController>
     [HttpPatch("{id}/deactivate")]

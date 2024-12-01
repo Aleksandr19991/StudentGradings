@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 using StudentGradings.BLL;
@@ -46,7 +45,7 @@ public class UsersController : ControllerBase
     }
 
     // GET api/<UsersController>/5
-    [HttpGet ("{id}/courses")]
+    [HttpGet("{id}/courses")]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
         var course = new List<UserWithCoursesResponse>();

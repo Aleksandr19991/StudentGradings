@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
+using StudentGradings.BLL.Exeptions;
 using StudentGradings.BLL.Mappings;
 using StudentGradings.BLL.Models;
 using StudentGradings.CORE;
@@ -53,18 +54,24 @@ public class UserService
     public void AddUser(UserModelBll user)
     {
         var userId = _mapper.Map<UserDto>(user);
+        if (userId == null)
+            throw new EntityNotFoundException($"User with id{user} was not found");
         _userRepository.AddUser(userId);
     }
 
     public void UpdateUser(UserModelBll user)
     {
         var userId = _mapper.Map<UserDto>(user);
+        if (userId == null)
+            throw new EntityNotFoundException($"User with id{user} was not found");
         _userRepository.UpdateUser(userId);
     }
 
     public UserModelBll GetUserRoleByUserId(Guid userId)
     {
         var role = _userRepository.GetUserRoleByUserId(userId);
+        if (role == null)
+            throw new EntityNotFoundException($"Role with id{userId} was not found");
         var result = _mapper.Map<UserModelBll>(role);
         return result;
     }
@@ -72,6 +79,8 @@ public class UserService
     public IEnumerable<UserModelBll> GetCoursesByUserId(Guid userId)
     {
         var courses = _userRepository.GetCoursesByUserId(userId);
+        if (courses == null)
+            throw new EntityNotFoundException($"Courses with id{userId} was not found");
         var result = _mapper.Map<IEnumerable<UserModelBll>>(courses);
         return result;
     }
