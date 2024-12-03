@@ -17,12 +17,12 @@ public class CoursesController : ControllerBase
     }
 
     // POST api/<CoursesController>
-    [HttpPost]
-    public ActionResult<Guid> AddGradeByCourseId(AddGradeRequest request)
-    {
-        var addedGrade = Guid.NewGuid();
-        return Ok(addedGrade);
-    }
+    //[HttpPost]
+    //public ActionResult<Guid> AddGradeByCourseId(AddGradeRequest request)
+    //{
+    //    var addedGrade = Guid.NewGuid();
+    //    return Ok(addedGrade);
+    //}
 
     // GET api/<CoursesController>
     [HttpGet("{id}/users")]

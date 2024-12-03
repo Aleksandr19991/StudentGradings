@@ -1,23 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 using StudentGradings.BLL;
+using StudentGradings.BLL.Interfaces;
 
 namespace StudentGradings.API.Controllers;
 
 [ApiController]
 [Route("api/users")]
 
-public class UsersController : ControllerBase
+public class UsersController(IUsersService userService, IMapper mapper) : ControllerBase
 {
-    private UserService _userService;
-
-    public UsersController()
-    {
-        _userService = new UserService();
-    }
-
-    // POST api/<UsersController>
+    // POST api/users
     [HttpPost]
     public ActionResult<Guid> RegisterUser([FromBody] RegisterUserRequest request)
     {
@@ -33,7 +28,7 @@ public class UsersController : ControllerBase
         {
             return BadRequest("Invalid client request");
         }
-        var token = _userService.Authenticate(request.Email, request.Password);
+        var token = userService.Authenticate(request.Email, request.Password);
         if (token != null)
         {
             return Ok(token);
@@ -44,7 +39,7 @@ public class UsersController : ControllerBase
         }
     }
 
-    // GET api/<UsersController>/5
+    // GET api/users/5
     [HttpGet("{id}/courses")]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
     {
@@ -52,21 +47,21 @@ public class UsersController : ControllerBase
         return course.ToList();
     }
 
-    // PUT api/<UsersController>/5
+    // PUT api/users/5
     [HttpPut("{id}")]
     public IActionResult UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
         return NoContent();
     }
 
-    // PATCH api/<UsersController>/5
+    // PATCH api/users/5
     [HttpPatch("{id}/deactivate")]
     public IActionResult DeactivateUser([FromRoute] Guid id)
     {
         return NoContent();
     }
 
-    // DELETE api/<UsersController>/5
+    // DELETE api/users/5
     [HttpDelete("{id}")]
     public IActionResult DeleteUser([FromRoute] Guid id)
     {

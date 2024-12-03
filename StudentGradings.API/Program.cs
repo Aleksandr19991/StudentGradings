@@ -1,33 +1,33 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using StudentGradings.API.Configuration;
-using StudentGradings.API.Models.Requests.Validators;
+using StudentGradings.BLL.Configuration;
+using StudentGradings.DAL.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuth();
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
+builder.Configuration
+    .AddJsonFile("appsetings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsetings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsetings.secrets.json", optional: true, reloadOnChange: true)
+    .AddCommandLine(args)
+    .AddEnvironmentVariables()
+    .Build();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var configuration = builder.Configuration;
+
+builder.Services.AddApiServices();
+builder.Services.AddBllServices();
+builder.Services.AddDalServices(configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.MapControllers();
 
 app.Run();

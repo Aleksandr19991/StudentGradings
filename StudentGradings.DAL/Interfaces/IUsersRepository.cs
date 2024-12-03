@@ -2,7 +2,7 @@
 
 namespace StudentGradings.DAL.Interfaces
 {
-    public interface IUserRepository
+    public interface IUsersRepository
     {
         void AddUser(UserDto user);
         IEnumerable<CourseDto> GetCoursesByUserId(Guid userId);

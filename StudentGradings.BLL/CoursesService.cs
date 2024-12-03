@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using StudentGradings.BLL.Exeptions;
+using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Mappings;
 using StudentGradings.BLL.Models;
 using StudentGradings.DAL;
@@ -7,13 +8,13 @@ using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.BLL;
 
-public class CourseService
+public class CoursesService : ICoursesService
 {
-    private CourseRepository _courseRepository;
+    private CoursesRepository _courseRepository;
 
     private Mapper _mapper;
 
-    public CourseService()
+    public CoursesService()
     {
         _courseRepository = new();
 
@@ -46,14 +47,14 @@ public class CourseService
         var grade = _mapper.Map<GradeBookDto>(gradeBook);
         if (grade == null)
             throw new EntityNotFoundException($"Grade with id{courseId} was not found");
-        _courseRepository.AddGradeByCourseId(grade,courseId);
+        _courseRepository.AddGradeByCourseId(grade, courseId);
     }
 
-    public void UpdateGradeByCourseId(GradeBookModelBll gradeBook, Guid courseId)
+    public void UpdateGradeByCourseId(GradeBookModelBll gradeBook)
     {
-        var grade = _mapper.Map<GradeBookDto>(gradeBook);
-        if (grade == null)
-            throw new EntityNotFoundException($"Grade with id{courseId} was not found");
-        _courseRepository.UpdateGradeByCourseId(grade, courseId);
+        var gradeB = _courseRepository.GetGradeBook(gradeBook.CourseId, gradeBook.UserId);
+        if (gradeB == null)
+            throw new EntityNotFoundException($"GradeBook with course id{gradeBook.CourseId} and user id{gradeBook.UserId}  was not found");
+        _courseRepository.UpdateGrade(gradeB, gradeBook.Grade);
     }
 }

@@ -6,5 +6,4 @@ public class GradeBookDto
     public float Grade { get; set; }
     public UserDto User { get; set; }
     public CourseDto Course { get; set; }
-    public IEnumerable<GroupDto> Groups { get; set; }
 }
