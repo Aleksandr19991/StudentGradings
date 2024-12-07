@@ -8,6 +8,7 @@ public class UserDto
     public string Phone { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public bool IsDeactevated { get; set; }
     public UserRoleDto Role { get; set; }
-    public IEnumerable<CourseDto> Courses { get; set; }
+    public IEnumerable<CourseDto> Courses { get; set; } = [];
 }

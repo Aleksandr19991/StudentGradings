@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentGradings.DAL", "Stud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentGradings.BLL", "StudentGradings.BLL\StudentGradings.BLL.csproj", "{D0D2FE47-A78D-48C6-88EB-C650C185FADE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentGradings.CORE", "StudentGradings.CORE\StudentGradings.CORE.csproj", "{D18DCEBD-5B39-44BD-B914-3853420BCDE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentGradings.CORE", "StudentGradings.CORE\StudentGradings.CORE.csproj", "{D18DCEBD-5B39-44BD-B914-3853420BCDE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

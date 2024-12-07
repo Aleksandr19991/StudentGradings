@@ -4,11 +4,11 @@ namespace StudentGradings.DAL.Interfaces
 {
     public interface ICoursesRepository
     {
-        void AddCourse(CourseDto course);
-        void AddGradeByCourseId(GradeBookDto gradeBook, Guid courseId);
-        IEnumerable<CourseDto> GetGradesByCourseId(Guid courseId);
-        IEnumerable<UserDto> GetUsersByCourseId(Guid courseId);
-        void UpdateCourse(CourseDto course);
-        void UpdateGradeByCourseId(GradeBookDto gradeBook, Guid courseId);
+        Guid AddCourse(CourseDto course);
+        void DeactivateUser(CourseDto course);
+        void DeleteCourse(CourseDto course);
+        CourseDto? GetCourseById(Guid id);
+        List<UserDto> GetUsersByCourseId(Guid courseId);
+        void UpdateCourse(CourseDto course, CourseDto changeCourse);
     }
 }

@@ -6,33 +6,54 @@ namespace StudentGradings.DAL;
 
 public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 {
-    public void AddUser(UserDto user)
+    public Guid AddUser(UserDto user)
     {
         context.Users.Add(user);
         context.SaveChanges();
+        return user.Id;
     }
 
-    public void UpdateUser(UserDto user)
+    public void UpdateUser(UserDto user, UserDto changeUser)
     {
-        context.Users.Update(user);
+        user.Name = changeUser.Name;
+        user.LastName = changeUser.LastName;
+        user.Phone = changeUser.Phone;
+        user.Email = changeUser.Email;
         context.SaveChanges();
     }
 
-    public UserDto? GetUserByEmail(string email)
+    public void UpdatePasswordByUserId(UserDto user, string password)
     {
-        var user = context.Users.Where(u => u.Email == email).SingleOrDefault();
-        return user;
+        user.Password = password;
+        context.SaveChanges();
     }
 
-    public UserDto GetUserRoleByUserId(Guid userId)
+    public UserDto? GetUserById(Guid id) => context.Users.SingleOrDefault(c => c.Id == id);
+
+    public UserDto? GetUserByEmail(string email) => context.Users.SingleOrDefault(c => c.Email == email);
+
+    public void GetUserRoleByUserId(UserDto user, UserRoleDto role)
     {
-        var role = context.Users.Include(u => u.Role).Where(r => r.Id == userId).FirstOrDefault();
-        return role;
+        user.Role = role;
+        context.SaveChanges();
     }
 
-    public IEnumerable<CourseDto> GetCoursesByUserId(Guid userId)
+    public List<CourseDto> GetCoursesByUserId(Guid userId)
     {
-        var courses = context.Users.Include(u => u.Courses).Where(c => c.Id == userId).FirstOrDefault();
-        return context.Courses.ToList();
+        var users = context.Users.Where(c => c.Id == userId).Include(c => c.Courses).FirstOrDefault();
+        var courses = users.Courses.ToList();
+        return courses;
+    }
+
+    public void DeactivateUser(UserDto user)
+    {
+        user.IsDeactevated = true;
+        context.SaveChanges();
+    }
+
+    public void DeleteUser(UserDto user)
+    {
+        context.Users.Remove(user);
+        context.SaveChanges();
     }
 }

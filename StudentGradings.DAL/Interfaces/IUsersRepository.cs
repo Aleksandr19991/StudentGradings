@@ -4,10 +4,14 @@ namespace StudentGradings.DAL.Interfaces
 {
     public interface IUsersRepository
     {
-        void AddUser(UserDto user);
-        IEnumerable<CourseDto> GetCoursesByUserId(Guid userId);
+        Guid AddUser(UserDto user);
+        void DeactivateUser(UserDto user);
+        void DeleteUser(UserDto user);
+        List<CourseDto> GetCoursesByUserId(Guid userId);
         UserDto? GetUserByEmail(string email);
-        UserDto GetUserRoleByUserId(Guid userId);
-        void UpdateUser(UserDto user);
+        UserDto? GetUserById(Guid id);
+        void GetUserRoleByUserId(UserDto user, UserRoleDto role);
+        void UpdatePasswordByUserId(UserDto user, string password);
+        void UpdateUser(UserDto user, UserDto ChangeUser);
     }
 }

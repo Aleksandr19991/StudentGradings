@@ -4,56 +4,42 @@ using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.DAL
 {
-    public class CoursesRepository : ICoursesRepository
+    public class CoursesRepository(StudentGradingsContext context) : ICoursesRepository
     {
-        private StudentGradingsContext _context;
-
-        public CoursesRepository()
+        public Guid AddCourse(CourseDto course)
         {
-            //_context = new Context();
+            context.Courses.Add(course);
+            context.SaveChanges();
+            return course.Id;
         }
 
-        public void AddCourse(CourseDto course)
+        public void UpdateCourse(CourseDto course, CourseDto changeCourse)
         {
-            _context.Courses.Add(course);
-            _context.SaveChanges();
+            course.Name = changeCourse.Name;
+            course.Description = changeCourse.Description;
+            course.Hours = changeCourse.Hours;
+            context.SaveChanges();
         }
 
-        public void UpdateCourse(CourseDto course)
-        {
-            _context.Courses.Update(course);
-            _context.SaveChanges();
-        }
+        public CourseDto? GetCourseById(Guid id) => context.Courses.SingleOrDefault(c => c.Id == id);
 
         public List<UserDto> GetUsersByCourseId(Guid courseId)
         {
-            var course = _context.Courses.Where(c => c.Id == courseId).Include(c => c.Users).FirstOrDefault();
+            var course = context.Courses.Where(c => c.Id == courseId).Include(c => c.Users).FirstOrDefault();
             var students = course.Users.ToList();
             return students;
         }
 
-        public List<GradeBookDto> GetGradesByCourseId(Guid courseId)
+        public void DeactivateUser(CourseDto course)
         {
-            var grades = _context.GradeBooks.Where(c => c.Id == courseId).ToList(); 
-            return grades;
+            course.IsDeactevated = true;
+            context.SaveChanges();
         }
 
-        public void AddGradeByCourseId(GradeBookDto gradeBook)
+        public void DeleteCourse(CourseDto course)
         {
-            _context.GradeBooks.Add(gradeBook);
-            _context.SaveChanges();
-        }
-
-        public void UpdateGrade(GradeBookDto gradeBook, float grade)
-        {
-           gradeBook.Grade = grade;
-            _context.SaveChanges();
-        }
-
-        public GradeBookDto GetGradeBook(Guid courseId, Guid userId)
-        {
-            var gradeBook = _context.GradeBooks.Where(c => c.Course.Id == courseId && c.User.Id == userId).SingleOrDefault();
-            return gradeBook;
+            context.Courses.Remove(course);
+            context.SaveChanges();
         }
     }
 }
