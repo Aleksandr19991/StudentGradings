@@ -49,7 +49,8 @@ public class UsersService : IUsersService
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
             return tokenString;
         }
-        else return null;
+        else
+            throw new EntityNotFoundException($"The Email or Password is entered incorrectly, please try again");
     }
 
     public void AddUser(UserModelBll userId)
@@ -60,27 +61,71 @@ public class UsersService : IUsersService
         _usersRepository.AddUser(newUser);
     }
 
-    public void UpdateUser(Guid id, UserModelBll user)
+    public void UpdateUser(Guid id, UserModelBll newUser)
     {
-        var userId = _mapper.Map<UserDto>(user);
-        _usersRepository.UpdateUser(id, userId);
+        var user1 = _usersRepository.GetUserById(id);
+        if (user1 == null)
+            throw new EntityNotFoundException($"User1 with id{id} was not found");
+
+        var user2 = _mapper.Map<UserDto>(newUser);
+        if (user2 == null)
+            throw new EntityNotFoundException($"User2 with id{id} was not found");
+
+        _usersRepository.UpdateUser(user1, user2);
     }
 
-    //public UserModelBll GetUserRoleByUserId(Guid userId)
-    //{
-    //    var role = _usersRepository.GetUserRoleByUserId(userId);
-    //    if (role == null)
-    //        throw new EntityNotFoundException($"Role with id{userId} was not found");
-    //    var result = _mapper.Map<UserModelBll>(role);
-    //    return result;
-    //}
+    public void UpdatePasswordByUserId(Guid id, UserModelBll user)
+    {
+        var userPassword = _usersRepository.GetUserById(id);
+        if (userPassword == null)
+            throw new EntityNotFoundException($"User with id{id} was not found");
 
-    public List<UserModelBll> GetCoursesByUserId(Guid userId)
+        _usersRepository.UpdatePasswordByUserId(userPassword, user.Password);
+    }
+
+    public List<UserModelBll> GetAllUsers()
+    {
+        var users = _usersRepository.GetAllUsers();
+        var result = _mapper.Map<List<UserModelBll>>(users);
+        return result;
+    }
+
+    public UserRoleModelBll GetUserRoleByUserId(Guid id, UserRoleModelBll role)
+    {
+        var user = _usersRepository.GetUserById(id);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id{id} was not found");
+
+        var userRole = _mapper.Map<UserRoleDto>(role);
+        if (userRole == null)
+            throw new EntityNotFoundException($"Role with id{id} was not found");
+        return role;
+    }
+
+    public UserModelBll GetCoursesByUserId(Guid userId)
     {
         var courses = _usersRepository.GetCoursesByUserId(userId);
         if (courses == null)
             throw new EntityNotFoundException($"Courses with id{userId} was not found");
         var result = _mapper.Map<UserModelBll>(courses);
-        //return
+        return result;
+    }
+
+    public void DeactivateUser(Guid id)
+    {
+        var user = _usersRepository.GetUserById(id);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id{id} was not found");
+
+        _usersRepository.DeactivateUser(user);
+    }
+
+    public void DeleteCourse(Guid id)
+    {
+        var user = _usersRepository.GetUserById(id);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id{id} was not found");
+
+        _usersRepository.DeleteUser(user);
     }
 }

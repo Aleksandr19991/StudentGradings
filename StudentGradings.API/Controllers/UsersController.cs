@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
-using StudentGradings.BLL;
 using StudentGradings.BLL.Interfaces;
 
 namespace StudentGradings.API.Controllers;

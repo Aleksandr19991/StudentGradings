@@ -4,10 +4,14 @@ namespace StudentGradings.BLL.Interfaces
 {
     public interface IUsersService
     {
-        void AddUser(UserModelBll user);
+        void AddUser(UserModelBll userId);
         string? Authenticate(string email, string password);
-        IEnumerable<UserModelBll> GetCoursesByUserId(Guid userId);
-        UserModelBll GetUserRoleByUserId(Guid userId);
-        void UpdateUser(UserModelBll user);
+        void DeactivateUser(Guid id);
+        void DeleteCourse(Guid id);
+        List<UserModelBll> GetAllUsers();
+        UserModelBll GetCoursesByUserId(Guid userId);
+        UserRoleModelBll GetUserRoleByUserId(Guid id, UserRoleModelBll role);
+        void UpdatePasswordByUserId(Guid id, UserModelBll user);
+        void UpdateUser(Guid id, UserModelBll newUser);
     }
 }

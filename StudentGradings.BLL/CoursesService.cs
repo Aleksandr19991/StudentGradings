@@ -124,6 +124,7 @@ public class CoursesService : ICoursesService
         var result = _mapper.Map<UserModelBll>(users);
         return result;
     }
+
     public GradeBookModelBll GetGradesByCourseId(Guid courseId)
     {
         var grades = _gradeBooksRepository.GetGradesByCourseId(courseId);
