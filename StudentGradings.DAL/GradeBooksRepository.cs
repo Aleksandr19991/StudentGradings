@@ -41,10 +41,4 @@ public class GradeBooksRepository(StudentGradingsContext context) : IGradeBooksR
         var gradesUser = context.GradeBooks.Where(c => c.Id == userId).ToList();
         return gradesUser;
     }
-
-    public void DeactivateGradeBook(GradeBookDto gradeBook)
-    {
-        gradeBook.IsDeactevated = true;
-        context.SaveChanges();
-    }
 }

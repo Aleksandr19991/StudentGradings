@@ -7,6 +7,7 @@ namespace StudentGradings.DAL.Interfaces
         Guid AddUser(UserDto user);
         void DeactivateUser(UserDto user);
         void DeleteUser(UserDto user);
+        List<UserDto> GetAllUsers();
         List<CourseDto> GetCoursesByUserId(Guid userId);
         UserDto? GetUserByEmail(string email);
         UserDto? GetUserById(Guid id);

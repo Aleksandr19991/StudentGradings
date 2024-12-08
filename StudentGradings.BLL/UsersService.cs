@@ -52,37 +52,35 @@ public class UsersService : IUsersService
         else return null;
     }
 
-    public void AddUser(UserModelBll user)
+    public void AddUser(UserModelBll userId)
+    {
+        var newUser = _mapper.Map<UserDto>(userId);
+        if (newUser == null)
+            throw new EntityNotFoundException($"User with id{userId} was not found");
+        _usersRepository.AddUser(newUser);
+    }
+
+    public void UpdateUser(Guid id, UserModelBll user)
     {
         var userId = _mapper.Map<UserDto>(user);
-        if (userId == null)
-            throw new EntityNotFoundException($"User with id{user} was not found");
-        _usersRepository.AddUser(userId);
+        _usersRepository.UpdateUser(id, userId);
     }
 
-    public void UpdateUser(UserModelBll user)
-    {
-        var userId = _mapper.Map<UserDto>(user);
-        if (userId == null)
-            throw new EntityNotFoundException($"User with id{user} was not found");
-        _usersRepository.UpdateUser(userId);
-    }
+    //public UserModelBll GetUserRoleByUserId(Guid userId)
+    //{
+    //    var role = _usersRepository.GetUserRoleByUserId(userId);
+    //    if (role == null)
+    //        throw new EntityNotFoundException($"Role with id{userId} was not found");
+    //    var result = _mapper.Map<UserModelBll>(role);
+    //    return result;
+    //}
 
-    public UserModelBll GetUserRoleByUserId(Guid userId)
-    {
-        var role = _usersRepository.GetUserRoleByUserId(userId);
-        if (role == null)
-            throw new EntityNotFoundException($"Role with id{userId} was not found");
-        var result = _mapper.Map<UserModelBll>(role);
-        return result;
-    }
-
-    public IEnumerable<UserModelBll> GetCoursesByUserId(Guid userId)
+    public List<UserModelBll> GetCoursesByUserId(Guid userId)
     {
         var courses = _usersRepository.GetCoursesByUserId(userId);
         if (courses == null)
             throw new EntityNotFoundException($"Courses with id{userId} was not found");
-        var result = _mapper.Map<IEnumerable<UserModelBll>>(courses);
-        return result;
+        var result = _mapper.Map<UserModelBll>(courses);
+        //return
     }
 }

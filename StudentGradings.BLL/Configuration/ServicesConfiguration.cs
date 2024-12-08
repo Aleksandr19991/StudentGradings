@@ -9,6 +9,7 @@ public static class ServicesConfiguration
     public static void AddBllServices(this IServiceCollection services)
     {
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<ICoursesService, CoursesService>();
         services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
     }
 }

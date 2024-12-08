@@ -23,6 +23,11 @@ namespace StudentGradings.DAL
 
         public CourseDto? GetCourseById(Guid id) => context.Courses.SingleOrDefault(c => c.Id == id);
 
+        public List<CourseDto> GetAllCourses()
+        {
+           return context.Courses.Where(c => c.IsDeactevated == false).ToList();
+        }
+
         public List<UserDto> GetUsersByCourseId(Guid courseId)
         {
             var course = context.Courses.Where(c => c.Id == courseId).Include(c => c.Users).FirstOrDefault();
@@ -30,7 +35,7 @@ namespace StudentGradings.DAL
             return students;
         }
 
-        public void DeactivateUser(CourseDto course)
+        public void DeactivateCourse(CourseDto course)
         {
             course.IsDeactevated = true;
             context.SaveChanges();

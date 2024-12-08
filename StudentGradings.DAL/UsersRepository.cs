@@ -38,6 +38,11 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
         context.SaveChanges();
     }
 
+    public List<UserDto> GetAllUsers()
+    {
+        return context.Users.Where(c => c.IsDeactevated == false).ToList();
+    }
+
     public List<CourseDto> GetCoursesByUserId(Guid userId)
     {
         var users = context.Users.Where(c => c.Id == userId).Include(c => c.Courses).FirstOrDefault();
