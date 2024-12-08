@@ -21,7 +21,10 @@ namespace StudentGradings.DAL
             context.SaveChanges();
         }
 
-        public CourseDto? GetCourseById(Guid id) => context.Courses.SingleOrDefault(c => c.Id == id);
+        public CourseDto? GetCourseById(Guid id)
+        {
+            return context.Courses.SingleOrDefault(c => c.Id == id);
+        }
 
         public List<CourseDto> GetAllCourses()
         {

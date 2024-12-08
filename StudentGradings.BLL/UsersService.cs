@@ -52,12 +52,14 @@ public class UsersService : IUsersService
             throw new EntityNotFoundException($"The Email or Password is entered incorrectly, please try again");
     }
 
-    public void AddUser(UserModelBll userId)
+    public Guid AddUser(UserModelBll userId)
     {
         var newUser = _mapper.Map<UserDto>(userId);
         if (newUser == null)
             throw new EntityNotFoundException($"User with id{userId} was not found");
-        _usersRepository.AddUser(newUser);
+
+        var result = _usersRepository.AddUser(newUser);
+        return result;
     }
 
     public void UpdateUser(Guid id, UserModelBll newUser)
@@ -119,7 +121,7 @@ public class UsersService : IUsersService
         _usersRepository.DeactivateUser(user);
     }
 
-    public void DeleteCourse(Guid id)
+    public void DeleteUser(Guid id)
     {
         var user = _usersRepository.GetUserById(id);
         if (user == null)
