@@ -16,7 +16,6 @@ namespace StudentGradings.BLL;
 public class UsersService : IUsersService
 {
     private IUsersRepository _usersRepository;
-
     private Mapper _mapper;
 
     public UsersService(IUsersRepository usersRepository)
