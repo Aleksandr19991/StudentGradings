@@ -10,5 +10,7 @@ public class UserMapperProfile : Profile
     {
         CreateMap<UserModelBll, UserDto>();
         CreateMap<UserDto, UserModelBll>();
+        CreateMap<UserRoleModelBll, UserRoleDto>();
+        CreateMap<UserRoleDto, UserRoleModelBll>();
     }
 }

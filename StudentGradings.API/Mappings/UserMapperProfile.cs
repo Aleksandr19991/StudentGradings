@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using StudentGradings.API.Models;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 using StudentGradings.BLL.Models;
@@ -15,5 +16,7 @@ public class UserMapperProfile : Profile
         CreateMap<LoginRequest, UserModelBll>();
         CreateMap<UserModelBll, AuthenticatedResponse>();
         CreateMap<AddGradeRequest, GradeBookResponse>();
+        CreateMap<UserRole, UserRoleModelBll>();
+        CreateMap<UserModelBll, UserResponse>();
     }
 }
