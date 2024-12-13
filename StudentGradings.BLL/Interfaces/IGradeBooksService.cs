@@ -7,6 +7,6 @@ namespace StudentGradings.BLL.Interfaces
         Guid AddGradeBook(GradeBookModelBll gradeBookId);
         void AddGradeByCourseId(Guid courseId, Guid userId);
         GradeBookModelBll GetGradesByCourseId(Guid courseId);
-        void UpdateGradeByCourseId(GradeBookModelBll gradeBook);
+        void UpdateGradeByCourseId(Guid id, GradeBookModelBll gradeBook);
     }
 }

@@ -65,7 +65,7 @@ public class GradeBooksService : IGradeBooksService
         _gradeBooksRepository.AddGradeByCourseId(newGradeBook);
     }
 
-    public void UpdateGradeByCourseId(GradeBookModelBll gradeBook)
+    public void UpdateGradeByCourseId(Guid id, GradeBookModelBll gradeBook)
     {
         var gradeCourse = _gradeBooksRepository.GetGradeBook(gradeBook.CourseId, gradeBook.UserId);
         if (gradeCourse == null)

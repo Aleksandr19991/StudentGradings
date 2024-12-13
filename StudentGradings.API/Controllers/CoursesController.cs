@@ -50,19 +50,37 @@ public class CoursesController(
         return Ok(gradeCourse);
     }
 
-    // PATCH api/<UsersController>
-    [HttpPatch("{id}/deactivate")]
-    public IActionResult DeactivateCourse([FromRoute] Guid id)
+    // PUT api/courses/5
+    [HttpPut("{id}/course")]
+    public IActionResult UpdateCourse([FromRoute] Guid id, [FromBody] UpdateCourseRequest request)
     {
-        coursesService.DeactivateCourse(id);
+        var course = mapper.Map<CourseModelBll>(request);
+        coursesService.UpdateCourse(id, course);
         return NoContent();
     }
 
     // DELETE api/users/5
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser([FromRoute] Guid id)
+    public IActionResult DeleteCourse([FromRoute] Guid id)
     {
         coursesService.DeleteCourse(id);
+        return NoContent();
+    }
+
+    // PATCH api/<UsersController>
+    [HttpPatch("{id}/grade")]
+    public IActionResult UpdateGradeByCourseId([FromRoute] Guid id, [FromBody] UpdateGradeByCourseRequest request)
+    {
+        var grade = mapper.Map<GradeBookModelBll>(request);
+        gradeBooksService.UpdateGradeByCourseId(id, grade);
+        return NoContent();
+    }
+
+    // PATCH api/<UsersController>
+    [HttpPatch("{id}/deactivate")]
+    public IActionResult DeactivateCourse([FromRoute] Guid id)
+    {
+        coursesService.DeactivateCourse(id);
         return NoContent();
     }
 }

@@ -50,20 +50,12 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
         return Ok(coursesUser);
     }
 
-    // PATCH api/users/5
-    [HttpPatch("{id}/password")]
-    public IActionResult UpdatePasswordByUserId([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
+    // PUT api/users/5
+    [HttpPut("{id}/user")]
+    public IActionResult UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
-        var password = mapper.Map<UserModelBll>(request.Password);
-        usersService.UpdatePasswordByUserId(id, password);
-        return NoContent();
-    }
-
-    // PATCH api/users/5
-    [HttpPatch("{id}/deactivate")]
-    public IActionResult DeactivateUser([FromRoute] Guid id)
-    {
-        usersService.DeactivateUser(id);
+        var user = mapper.Map<UserModelBll>(request);
+        usersService.UpdateUser(id, user);
         return NoContent();
     }
 
@@ -72,6 +64,15 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     public IActionResult DeleteUser([FromRoute] Guid id)
     {
         usersService.DeleteUser(id);
+        return NoContent();
+    }
+
+    // PATCH api/users/5
+    [HttpPatch("{id}/password")]
+    public IActionResult UpdatePasswordByUserId([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
+    {
+        var password = mapper.Map<UserModelBll>(request.Password);
+        usersService.UpdatePasswordByUserId(id, password);
         return NoContent();
     }
 }
