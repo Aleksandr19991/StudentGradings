@@ -36,6 +36,12 @@ public class UsersService : IUsersService
 
         if (user != null && user.Password == password)
         {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, "42"),
+                new Claim(ClaimTypes.Role, "Teacher")
+            };
+
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(

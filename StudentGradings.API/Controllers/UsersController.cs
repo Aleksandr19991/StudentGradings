@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentGradings.API.Configuration;
+using StudentGradings.API.Models;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
-using StudentGradings.BLL;
 using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Models;
 
@@ -15,6 +17,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 {
     // POST api/users
     [HttpPost]
+    [CustomAuthorize([UserRole.Administrator])]
     public ActionResult<Guid> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var userId = mapper.Map<UserModelBll>(request);
@@ -24,6 +27,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     //"api/users/login"
     [HttpPost("login")]
+    [CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public ActionResult<string> LogIn([FromBody] LoginRequest request)
     {
         if (request is null)
@@ -43,17 +47,27 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // GET api/users/5
     [HttpGet("{id}/courses")]
-    public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromRoute] Guid id)
+    [CustomAuthorize([UserRole.Teacher, UserRole.Student])]
+    public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromBody] Guid id)
     {
         var courses = usersService.GetCoursesByUserId(id);
         var coursesUser = mapper.Map<List<CourseWithUsersResponse>>(courses);
         return Ok(coursesUser);
+
+        //var teacherId = Guid.NewGuid();
+        //var studentId = Guid.NewGuid();
+
     }
 
     // PUT api/users/5
     [HttpPut("{id}/user")]
+    [Authorize]
     public IActionResult UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
+        var userId = Guid.NewGuid();
+        if (id != userId)
+            return Forbid();
+
         var user = mapper.Map<UserModelBll>(request);
         usersService.UpdateUser(id, user);
         return NoContent();
@@ -61,6 +75,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // DELETE api/users/5
     [HttpDelete("{id}")]
+    [CustomAuthorize([UserRole.Administrator])]
     public IActionResult DeleteUser([FromRoute] Guid id)
     {
         usersService.DeleteUser(id);
@@ -69,6 +84,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // PATCH api/users/5
     [HttpPatch("{id}/password")]
+    [CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public IActionResult UpdatePasswordByUserId([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
     {
         var password = mapper.Map<UserModelBll>(request.Password);

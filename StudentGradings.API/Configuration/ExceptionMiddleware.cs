@@ -15,35 +15,43 @@ public class ExceptionMiddleware
     {
         try
         {
+            httpContext.Response.ContentType = "application/json";
             await _next(httpContext);
         }
         catch (EntityNotFoundException ex)
         {
             await HandleEntityNotFoundExceptionAsync(httpContext, ex);
         }
+        catch (AuthorizationFailedException ex)
+        {
+            await HandleAuthorizationFailedExceptionAsync(httpContext, ex);
+        }
         catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext, ex);
         }
     }
+    private async Task HandleAuthorizationFailedExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+        await WriteErrorDetailsAsync(context, exception.Message);
+    }
     private async Task HandleEntityNotFoundExceptionAsync(HttpContext context, Exception exception)
     {
-        context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-        await context.Response.WriteAsync(new ErrorDetails()
-        {
-            StatusCode = context.Response.StatusCode,
-            Message = exception.Message
-        }.ToString());
+        await WriteErrorDetailsAsync(context, exception.Message);
     }
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        await WriteErrorDetailsAsync(context, "Проект сломался!");
+    }
+    private async Task WriteErrorDetailsAsync(HttpContext context, string message)
+    {
         await context.Response.WriteAsync(new ErrorDetails()
         {
             StatusCode = context.Response.StatusCode,
-            Message = "Internal Server Error from the custom middleware."
+            Message = message
         }.ToString());
     }
 }

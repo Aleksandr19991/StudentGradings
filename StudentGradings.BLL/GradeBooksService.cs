@@ -42,7 +42,6 @@ public class GradeBooksService : IGradeBooksService
             throw new EntityNotFoundException($"Course with id{gradeBookId} was not found");
 
         var result = _gradeBooksRepository.AddGradeBook(newGradeBook);
-
         return result;
     }
 

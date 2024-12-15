@@ -4,5 +4,6 @@ public enum UserRole
 {
     Unknown = 0,
     Teacher,
-    Student
+    Student,
+    Administrator
 }
