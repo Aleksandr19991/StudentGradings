@@ -6,6 +6,6 @@ public class CourseDto
     public string Name { get; set; }
     public string Description { get; set; }
     public string Hours { get; set; }
-    public bool IsDeactevated { get; set; }
+    public bool IsDeactivated { get; set; }
     public IEnumerable<UserDto> Users { get; set; } = [];
 }

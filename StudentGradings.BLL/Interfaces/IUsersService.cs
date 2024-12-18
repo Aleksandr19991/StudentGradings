@@ -10,7 +10,6 @@ namespace StudentGradings.BLL.Interfaces
         void DeleteUser(Guid id);
         List<UserModelBll> GetAllUsers();
         UserModelBll GetCoursesByUserId(Guid userId);
-        UserRoleModelBll GetUserRoleByUserId(Guid id, UserRoleModelBll role);
         void UpdatePasswordByUserId(Guid id, UserModelBll user);
         void UpdateUser(Guid id, UserModelBll newUser);
     }

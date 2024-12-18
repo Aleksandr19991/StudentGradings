@@ -29,7 +29,7 @@ public class CoursesService : ICoursesService
     {
         var newCourse = _mapper.Map<CourseDto>(courseId);
         if (newCourse == null)
-            throw new EntityNotFoundException($"Course with id{courseId} was not found");
+            throw new EntityNotFoundException($"Course with id{courseId} was not found.");
 
         var result = _coursesRepository.AddCourse(newCourse);
 
@@ -40,11 +40,11 @@ public class CoursesService : ICoursesService
     {
         var course1 = _coursesRepository.GetCourseById(id);
         if (course1 == null)
-            throw new EntityNotFoundException($"Course1 with id{id} was not found");
+            throw new EntityNotFoundException($"Course1 with id{id} was not found.");
 
         var course2 = _mapper.Map<CourseDto>(newCourseId);
         if (course2 == null)
-            throw new EntityNotFoundException($"Course2 with id{id} was not found");
+            throw new EntityNotFoundException($"Course2 with id{id} was not found.");
 
         _coursesRepository.UpdateCourse(course1, course2);
     }
@@ -53,7 +53,7 @@ public class CoursesService : ICoursesService
     {
         var course = _coursesRepository.GetCourseById(id);
         if (course == null)
-            throw new EntityNotFoundException($"Course with id{id} was not found");
+            throw new EntityNotFoundException($"Course with id{id} was not found.");
 
         var result = _mapper.Map<CourseModelBll>(course);
         return result;
@@ -70,7 +70,7 @@ public class CoursesService : ICoursesService
     {
         var users = _coursesRepository.GetUsersByCourseId(courseId);
         if (users == null)
-            throw new EntityNotFoundException($"Users with id{courseId} was not found");
+            throw new EntityNotFoundException($"Users with id{courseId} was not found.");
 
         var result = _mapper.Map<UserModelBll>(users);
         return result;
@@ -80,7 +80,7 @@ public class CoursesService : ICoursesService
     {
         var course = _coursesRepository.GetCourseById(id);
         if (course == null)
-            throw new EntityNotFoundException($"Course with id{id} was not found");
+            throw new EntityNotFoundException($"Course with id{id} was not found.");
 
         _coursesRepository.DeactivateCourse(course);
     }
@@ -89,7 +89,7 @@ public class CoursesService : ICoursesService
     {
         var course = _coursesRepository.GetCourseById(id);
         if (course == null)
-            throw new EntityNotFoundException($"Course with id{id} was not found");
+            throw new EntityNotFoundException($"Course with id{id} was not found.");
 
         _coursesRepository.DeleteCourse(course);
     }

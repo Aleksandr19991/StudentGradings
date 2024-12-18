@@ -17,7 +17,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 {
     // POST api/users
     [HttpPost]
-    [CustomAuthorize([UserRole.Administrator])]
+    //[CustomAuthorize([UserRole.Administrator])]
     public ActionResult<Guid> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var userId = mapper.Map<UserModelBll>(request);
@@ -27,7 +27,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     //"api/users/login"
     [HttpPost("login")]
-    [CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
+    //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public ActionResult<string> LogIn([FromBody] LoginRequest request)
     {
         if (request is null)
@@ -47,7 +47,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // GET api/users/5
     [HttpGet("{id}/courses")]
-    [CustomAuthorize([UserRole.Teacher, UserRole.Student])]
+    //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
     public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromBody] Guid id)
     {
         var courses = usersService.GetCoursesByUserId(id);
@@ -61,7 +61,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // PUT api/users/5
     [HttpPut("{id}/user")]
-    [Authorize]
+    //[Authorize]
     public IActionResult UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
         var userId = Guid.NewGuid();
@@ -75,7 +75,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // DELETE api/users/5
     [HttpDelete("{id}")]
-    [CustomAuthorize([UserRole.Administrator])]
+    //[CustomAuthorize([UserRole.Administrator])]
     public IActionResult DeleteUser([FromRoute] Guid id)
     {
         usersService.DeleteUser(id);
@@ -84,7 +84,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
 
     // PATCH api/users/5
     [HttpPatch("{id}/password")]
-    [CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
+    //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public IActionResult UpdatePasswordByUserId([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
     {
         var password = mapper.Map<UserModelBll>(request.Password);

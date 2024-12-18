@@ -21,14 +21,11 @@ namespace StudentGradings.DAL
             context.SaveChanges();
         }
 
-        public CourseDto? GetCourseById(Guid id)
-        {
-            return context.Courses.SingleOrDefault(c => c.Id == id);
-        }
+        public CourseDto? GetCourseById(Guid id) => context.Courses.SingleOrDefault(c => c.Id == id);
 
         public List<CourseDto> GetAllCourses()
         {
-           return context.Courses.Where(c => c.IsDeactevated == false).ToList();
+           return context.Courses.Where(c => c.IsDeactivated == false).ToList();
         }
 
         public List<UserDto> GetUsersByCourseId(Guid courseId)
@@ -40,7 +37,7 @@ namespace StudentGradings.DAL
 
         public void DeactivateCourse(CourseDto course)
         {
-            course.IsDeactevated = true;
+            course.IsDeactivated = true;
             context.SaveChanges();
         }
 

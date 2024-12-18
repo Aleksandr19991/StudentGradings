@@ -39,7 +39,9 @@ public class UsersService : IUsersService
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, "42"),
-                new Claim(ClaimTypes.Role, "Teacher")
+                new Claim(ClaimTypes.Role, "Teacher"),
+                new Claim(ClaimTypes.Role, "Student"),
+                new Claim(ClaimTypes.Role, "Administrator")
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key));
@@ -62,7 +64,7 @@ public class UsersService : IUsersService
     {
         var newUser = _mapper.Map<UserDto>(userId);
         if (newUser == null)
-            throw new EntityNotFoundException($"User with id{userId} was not found");
+            throw new EntityNotFoundException($"User with id{userId} was not found.");
 
         var result = _usersRepository.AddUser(newUser);
         return result;
@@ -72,11 +74,11 @@ public class UsersService : IUsersService
     {
         var user1 = _usersRepository.GetUserById(id);
         if (user1 == null)
-            throw new EntityNotFoundException($"User1 with id{id} was not found");
+            throw new EntityNotFoundException($"User1 with id{id} was not found.");
 
         var user2 = _mapper.Map<UserDto>(newUser);
         if (user2 == null)
-            throw new EntityNotFoundException($"User2 with id{id} was not found");
+            throw new EntityNotFoundException($"User2 with id{id} was not found.");
 
         _usersRepository.UpdateUser(user1, user2);
     }
@@ -85,7 +87,7 @@ public class UsersService : IUsersService
     {
         var userPassword = _usersRepository.GetUserById(id);
         if (userPassword == null)
-            throw new EntityNotFoundException($"User with id{id} was not found");
+            throw new EntityNotFoundException($"User with id{id} was not found.");
 
         _usersRepository.UpdatePasswordByUserId(userPassword, user.Password);
     }
@@ -97,23 +99,11 @@ public class UsersService : IUsersService
         return result;
     }
 
-    public UserRoleModelBll GetUserRoleByUserId(Guid id, UserRoleModelBll role)
-    {
-        var user = _usersRepository.GetUserById(id);
-        if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found");
-
-        var userRole = _mapper.Map<UserRoleDto>(role);
-        if (userRole == null)
-            throw new EntityNotFoundException($"Role with id{id} was not found");
-        return role;
-    }
-
     public UserModelBll GetCoursesByUserId(Guid userId)
     {
         var courses = _usersRepository.GetCoursesByUserId(userId);
         if (courses == null)
-            throw new EntityNotFoundException($"Courses with id{userId} was not found");
+            throw new EntityNotFoundException($"Courses with id{userId} was not found.");
         var result = _mapper.Map<UserModelBll>(courses);
         return result;
     }
@@ -122,7 +112,7 @@ public class UsersService : IUsersService
     {
         var user = _usersRepository.GetUserById(id);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found");
+            throw new EntityNotFoundException($"User with id{id} was not found.");
 
         _usersRepository.DeactivateUser(user);
     }
@@ -131,7 +121,7 @@ public class UsersService : IUsersService
     {
         var user = _usersRepository.GetUserById(id);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found");
+            throw new EntityNotFoundException($"User with id{id} was not found.");
 
         _usersRepository.DeleteUser(user);
     }

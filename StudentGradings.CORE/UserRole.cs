@@ -1,4 +1,4 @@
-﻿namespace StudentGradings.API.Models;
+﻿namespace StudentGradings.CORE;
 
 public enum UserRole
 {

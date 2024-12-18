@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentGradings.CORE;
 using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 
@@ -32,7 +33,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public UserDto? GetUserByEmail(string email) => context.Users.SingleOrDefault(c => c.Email == email);
 
-    public void GetUserRoleByUserId(UserDto user, UserRoleDto role)
+    public void GetUserRoleByUserId(UserDto user, UserRole role)
     {
         user.Role = role;
         context.SaveChanges();
@@ -40,7 +41,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public List<UserDto> GetAllUsers()
     {
-        return context.Users.Where(c => c.IsDeactevated == false).ToList();
+        return context.Users.Where(c => c.IsDeactivated == false).ToList();
     }
 
     public List<CourseDto> GetCoursesByUserId(Guid userId)
@@ -52,7 +53,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public void DeactivateUser(UserDto user)
     {
-        user.IsDeactevated = true;
+        user.IsDeactivated = true;
         context.SaveChanges();
     }
 

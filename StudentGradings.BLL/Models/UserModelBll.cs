@@ -1,4 +1,6 @@
-﻿namespace StudentGradings.BLL.Models;
+﻿using StudentGradings.CORE;
+
+namespace StudentGradings.BLL.Models;
 
 public class UserModelBll
 {
@@ -8,6 +10,6 @@ public class UserModelBll
     public string Phone { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public UserRoleModelBll? Role { get; set; }
+    public UserRole Role { get; set; }
     IEnumerable<CourseModelBll> courses { get; set; }
 }

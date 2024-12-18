@@ -1,4 +1,6 @@
-﻿namespace StudentGradings.API.Models.Responses;
+﻿using StudentGradings.CORE;
+
+namespace StudentGradings.API.Models.Responses;
 
 public class UserWithCoursesResponse
 {

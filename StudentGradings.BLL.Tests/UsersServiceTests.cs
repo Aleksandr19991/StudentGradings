@@ -5,7 +5,7 @@ namespace StudentGradings.BLL.Tests;
 
 public class UsersServiceTests
 {
-    private IMock<IUsersRepository> _usersRepositoryMock;
+    private Mock<IUsersRepository> _usersRepositoryMock;
     private UsersService _sut;
     public UsersServiceTests()
     {

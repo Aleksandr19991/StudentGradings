@@ -1,4 +1,6 @@
-﻿namespace StudentGradings.API.Models.Requests;
+﻿using StudentGradings.CORE;
+
+namespace StudentGradings.API.Models.Requests;
 
 public class RegisterUserRequest
 {

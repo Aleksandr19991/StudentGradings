@@ -5,7 +5,7 @@ namespace StudentGradings.BLL.Tests;
 
 public class CoursesServiceTests
 {
-    private IMock<ICoursesRepository> _coursesRepositoryMock;
+    private Mock<ICoursesRepository> _coursesRepositoryMock;
     private CoursesService _sut;
     public CoursesServiceTests()
     {
@@ -13,13 +13,13 @@ public class CoursesServiceTests
         _sut = new CoursesService(_coursesRepositoryMock.Object);
     }
 
-    [Fact]
-    public void AddCourse__()
-    {
-        //Arrange
+    //[Fact]
+    //public void AddCourse__ValidCourse
+    //{
+    //    //Arrange
 
-        //Act
+    //    //Act
 
-        //Assert
-    }
+    //    //Assert
+    //}
 }

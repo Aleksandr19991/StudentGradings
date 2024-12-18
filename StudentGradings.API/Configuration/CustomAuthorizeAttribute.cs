@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using StudentGradings.API.Models;
+using StudentGradings.CORE;
 
 namespace StudentGradings.API.Configuration;
 
