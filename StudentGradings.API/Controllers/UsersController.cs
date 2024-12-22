@@ -18,23 +18,23 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     // POST api/users
     [HttpPost]
     //[CustomAuthorize([UserRole.Administrator])]
-    public ActionResult<Guid> RegisterUser([FromBody] RegisterUserRequest request)
+    public async Task<ActionResult<Guid>> RegisterUserAsync([FromBody] RegisterUserRequest request)
     {
         var userId = mapper.Map<UserModelBll>(request);
-        var addedUserId = usersService.AddUser(userId);
+        var addedUserId = await usersService.AddUserAsync(userId);
         return Ok(addedUserId);
     }
 
     //"api/users/login"
     [HttpPost("login")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
-    public ActionResult<string> LogIn([FromBody] LoginRequest request)
+    public async Task<ActionResult<string>> LogInAsync([FromBody] LoginRequest request)
     {
         if (request is null)
         {
             return BadRequest("Invalid client request");
         }
-        var token = usersService.Authenticate(request.Email, request.Password);
+        var token = await usersService.AuthenticateAsync(request.Email, request.Password);
         if (token != null)
         {
             return Ok(token);
@@ -48,10 +48,10 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     // GET api/users/5
     [HttpGet("{id}/courses")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
-    public ActionResult<List<UserWithCoursesResponse>> GetCoursesByUserId([FromBody] Guid id)
+    public async Task<ActionResult<List<UserWithCoursesAndGradesResponse>>> GetUserWithCoursesAndGradesAsync([FromBody] Guid id)
     {
-        var courses = usersService.GetCoursesByUserId(id);
-        var coursesUser = mapper.Map<List<CourseWithUsersResponse>>(courses);
+        var courses = await usersService.GetUserWithCoursesAndGradesAsync(id);
+        var coursesUser = mapper.Map<List<CourseWithUsersAndGradesResponse>>(courses);
         return Ok(coursesUser);
 
         //var teacherId = Guid.NewGuid();
@@ -62,33 +62,33 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     // PUT api/users/5
     [HttpPut("{id}/user")]
     //[Authorize]
-    public IActionResult UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
+    public async Task<IActionResult> UpdateUserAsync([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
         var userId = Guid.NewGuid();
         if (id != userId)
             return Forbid();
 
         var user = mapper.Map<UserModelBll>(request);
-        usersService.UpdateUser(id, user);
+        await usersService.UpdateUserAsync(id, user);
         return NoContent();
     }
 
     // DELETE api/users/5
     [HttpDelete("{id}")]
     //[CustomAuthorize([UserRole.Administrator])]
-    public IActionResult DeleteUser([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)
     {
-        usersService.DeleteUser(id);
+        await usersService.DeleteUserAsync(id);
         return NoContent();
     }
 
     // PATCH api/users/5
     [HttpPatch("{id}/password")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
-    public IActionResult UpdatePasswordByUserId([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
+    public async Task<IActionResult> UpdatePasswordByUserIdAsync([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
     {
         var password = mapper.Map<UserModelBll>(request.Password);
-        usersService.UpdatePasswordByUserId(id, password);
+        await usersService.UpdatePasswordByUserIdAsync(id, password);
         return NoContent();
     }
 }

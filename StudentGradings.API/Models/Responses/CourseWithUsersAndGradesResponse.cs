@@ -1,10 +1,13 @@
-﻿namespace StudentGradings.API.Models.Responses;
+﻿using StudentGradings.BLL.Models;
 
-public class CourseWithUsersResponse
+namespace StudentGradings.API.Models.Responses;
+
+public class CourseWithUsersAndGradesResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public string Hours { get; set; }
+    public GradeBookModelBll? GradeBook { get; set; }
     public List<UserResponse> Users { get; set; }
 }

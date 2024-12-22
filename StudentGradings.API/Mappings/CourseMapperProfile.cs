@@ -7,11 +7,11 @@ namespace StudentGradings.API.Mappings
 {
     public class CourseMapperProfile : Profile
     {
-        public CourseMapperProfile() 
+        public CourseMapperProfile()
         {
-            CreateMap<CreateCourseRequest,CourseModelBll>();
+            CreateMap<CreateCourseRequest, CourseModelBll>();
             CreateMap<CourseModelBll, CourseResponse>();
-            CreateMap<CourseModelBll, CourseWithUsersResponse>();
+            CreateMap<CourseModelBll, CourseWithUsersAndGradesResponse>();
         }
     }
 }

@@ -4,12 +4,12 @@ namespace StudentGradings.DAL.Interfaces
 {
     public interface ICoursesRepository
     {
-        Guid AddCourse(CourseDto course);
-        void DeactivateCourse(CourseDto course);
-        void DeleteCourse(CourseDto course);
-        List<CourseDto> GetAllCourses();
-        CourseDto? GetCourseById(Guid id);
-        List<UserDto> GetUsersByCourseId(Guid courseId);
-        void UpdateCourse(CourseDto course, CourseDto changeCourse);
+        Task<Guid> AddCourseAsync(CourseDto course);
+        Task DeactivateCourseAsync(CourseDto course);
+        Task DeleteCourseAsync(CourseDto course);
+        Task<List<CourseDto>> GetAllCoursesAsync();
+        Task<CourseDto?> GetCourseByIdAsync(Guid id);
+        Task<CourseDto?> GetCourseWithUsersAndGradesAsync(Guid id);
+        Task UpdateCourseAsync(CourseDto course, CourseDto changeCourse);
     }
 }

@@ -1,8 +1,9 @@
-﻿using StudentGradings.CORE;
+﻿using StudentGradings.BLL.Models;
+using StudentGradings.CORE;
 
 namespace StudentGradings.API.Models.Responses;
 
-public class UserWithCoursesResponse
+public class UserWithCoursesAndGradesResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -10,5 +11,6 @@ public class UserWithCoursesResponse
     public string Phone { get; set; }
     public string Email { get; set; }
     public UserRole Role { get; set; }
-    public List<CourseResponse> Courses { get; set; }
+    public GradeBookModelBll? GradeBook { get; set; }
+    public List<CourseResponse>? Courses { get; set; }
 }

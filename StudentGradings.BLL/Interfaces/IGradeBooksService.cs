@@ -4,10 +4,10 @@ namespace StudentGradings.BLL.Interfaces
 {
     public interface IGradeBooksService
     {
-        Guid AddGradeBook(GradeBookModelBll gradeBookId);
-        void AddGradeByCourseId(Guid courseId, Guid userId);
-        GradeBookModelBll GetGradeBook(Guid courseId, Guid userId);
-        GradeBookModelBll GetGradesByCourseId(Guid courseId);
-        void UpdateGradeByCourseId(Guid id, GradeBookModelBll gradeBook);
+        Task<Guid> AddGradeBookAsync(GradeBookModelBll gradeBookId);
+        Task AddGradeByCourseIdAsync(Guid courseId, Guid userId);
+        Task<GradeBookModelBll> GetGradeBookAsync(Guid courseId, Guid userId);
+        Task<GradeBookModelBll> GetGradesByCourseIdAsync(Guid courseId);
+        Task UpdateGradeByCourseIdAsync(Guid id, GradeBookModelBll gradeBook);
     }
 }

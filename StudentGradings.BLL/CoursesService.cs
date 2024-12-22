@@ -25,33 +25,33 @@ public class CoursesService : ICoursesService
         _mapper = new Mapper(config);
     }
 
-    public Guid AddCourse(CourseModelBll courseId)
+    public async Task<Guid> AddCourseAsync(CourseModelBll courseId)
     {
         var newCourse = _mapper.Map<CourseDto>(courseId);
         if (newCourse == null)
             throw new EntityNotFoundException($"Course with id{courseId} was not found.");
 
-        var result = _coursesRepository.AddCourse(newCourse);
+        var result = await _coursesRepository.AddCourseAsync(newCourse);
 
         return result;
     }
 
-    public void UpdateCourse(Guid id, CourseModelBll newCourseId)
+    public async Task UpdateCourseAsync(Guid id, CourseModelBll newCourseId)
     {
-        var course1 = _coursesRepository.GetCourseById(id);
-        if (course1 == null)
-            throw new EntityNotFoundException($"Course1 with id{id} was not found.");
+        var course = await _coursesRepository.GetCourseByIdAsync(id);
+        if (course == null)
+            throw new EntityNotFoundException($"Course with id{id} was not found.");
 
-        var course2 = _mapper.Map<CourseDto>(newCourseId);
-        if (course2 == null)
-            throw new EntityNotFoundException($"Course2 with id{id} was not found.");
+        var newCourse = _mapper.Map<CourseDto>(newCourseId);
+        if (newCourse == null)
+            throw new EntityNotFoundException($"NewCourse with id{id} was not found.");
 
-        _coursesRepository.UpdateCourse(course1, course2);
+        await _coursesRepository.UpdateCourseAsync(course, newCourse);
     }
 
-    public CourseModelBll GetCourseById(Guid id)
+    public async Task<CourseModelBll> GetCourseByIdAsync(Guid id)
     {
-        var course = _coursesRepository.GetCourseById(id);
+        var course = await _coursesRepository.GetCourseByIdAsync(id);
         if (course == null)
             throw new EntityNotFoundException($"Course with id{id} was not found.");
 
@@ -59,38 +59,40 @@ public class CoursesService : ICoursesService
         return result;
     }
 
-    public List<CourseModelBll> GetAllCourses()
+    public async Task<List<CourseModelBll>> GetAllCoursesAsync()
     {
-        var courses = _coursesRepository.GetAllCourses();
+        var courses = await _coursesRepository.GetAllCoursesAsync();
+        if (courses == null)
+            throw new EntityNotFoundException($"Courses was not found.");
         var result = _mapper.Map<List<CourseModelBll>>(courses);
         return result;
     }
 
-    public UserModelBll GetUsersByCourseId(Guid courseId)
+    public async Task<CourseModelBll> GetCourseWithUsersAndGradesAsync(Guid courseId)
     {
-        var users = _coursesRepository.GetUsersByCourseId(courseId);
-        if (users == null)
-            throw new EntityNotFoundException($"Users with id{courseId} was not found.");
+        var course = await _coursesRepository.GetCourseWithUsersAndGradesAsync(courseId);
+        if (course == null)
+            throw new EntityNotFoundException($"Course with id{courseId} was not found.");
 
-        var result = _mapper.Map<UserModelBll>(users);
+        var result = _mapper.Map<CourseModelBll>(course);
         return result;
     }
 
-    public void DeactivateCourse(Guid id)
+    public async Task DeactivateCourseAsync(Guid id)
     {
-        var course = _coursesRepository.GetCourseById(id);
+        var course = await _coursesRepository.GetCourseByIdAsync(id);
         if (course == null)
             throw new EntityNotFoundException($"Course with id{id} was not found.");
 
-        _coursesRepository.DeactivateCourse(course);
+        await _coursesRepository.DeactivateCourseAsync(course);
     }
 
-    public void DeleteCourse(Guid id)
+    public async Task DeleteCourseAsync(Guid id)
     {
-        var course = _coursesRepository.GetCourseById(id);
+        var course = await _coursesRepository.GetCourseByIdAsync(id);
         if (course == null)
             throw new EntityNotFoundException($"Course with id{id} was not found.");
 
-        _coursesRepository.DeleteCourse(course);
+        await _coursesRepository.DeleteCourseAsync(course);
     }
 }

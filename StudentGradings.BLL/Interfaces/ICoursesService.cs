@@ -4,12 +4,12 @@ namespace StudentGradings.BLL.Interfaces
 {
     public interface ICoursesService
     {
-        Guid AddCourse(CourseModelBll courseId);
-        void DeactivateCourse(Guid id);
-        void DeleteCourse(Guid id);
-        List<CourseModelBll> GetAllCourses();
-        CourseModelBll GetCourseById(Guid id);
-        UserModelBll GetUsersByCourseId(Guid courseId);
-        void UpdateCourse(Guid id, CourseModelBll newCourseId);
+        Task<Guid> AddCourseAsync(CourseModelBll courseId);
+        Task DeactivateCourseAsync(Guid id);
+        Task DeleteCourseAsync(Guid id);
+        Task<List<CourseModelBll>> GetAllCoursesAsync();
+        Task<CourseModelBll> GetCourseByIdAsync(Guid id);
+        Task<CourseModelBll> GetCourseWithUsersAndGradesAsync(Guid courseId);
+        Task UpdateCourseAsync(Guid id, CourseModelBll newCourseId);
     }
 }

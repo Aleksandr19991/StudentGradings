@@ -4,11 +4,11 @@ namespace StudentGradings.DAL.Interfaces
 {
     public interface IGradeBooksRepository
     {
-        Guid AddGradeBook(GradeBookDto gradeBook);
-        void AddGradeByCourseId(GradeBookDto gradeBook);
-        GradeBookDto? GetGradeBook(Guid courseId, Guid userId);
-        List<GradeBookDto> GetGradesByCourseId(Guid courseId);
-        List<GradeBookDto> GetGradesByUserId(Guid userId);
-        void UpdateGrade(GradeBookDto gradeBook, float grade);
+        Task<Guid> AddGradeBookAsync(GradeBookDto gradeBook);
+        Task AddGradeByCourseIdAsync(GradeBookDto gradeBook);
+        Task<GradeBookDto?> GetGradeBookAsync(Guid courseId, Guid userId);
+        Task<List<GradeBookDto>> GetGradesByCourseIdAsync(Guid courseId);
+        Task<List<GradeBookDto>> GetGradesByUserIdAsync(Guid userId);
+        Task UpdateGradeAsync(GradeBookDto gradeBook, float grade);
     }
 }

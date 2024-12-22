@@ -105,4 +105,23 @@ public class GradeBooksServiceTests
         //Assert
         Assert.Equal(message, exception.Message);
     }
+
+    [Fact]
+    public void UpdateGradeByCourseId_NotExistingCourseSent_EntityNotFoundExceptionThrown()
+    {
+        ////Arrange
+        //var courseId = Guid.NewGuid();
+        //var userId = Guid.NewGuid();
+        //var course = new CourseDto() { Id = courseId };
+        //var user = new UserDto() { Id = userId, Role = UserRole.Student };
+        //var gradeBook = new GradeBookDto() {  };
+        //var message = $"GradeBook with course id{gradeBook.CourseId} and user{gradeBook.UserId} id was not found.";
+        //_coursesRepositoryMock.Setup(c => c.GetCourseById(courseId)).Returns(course);
+        //_usersRepositoryMock.Setup(c => c.GetUserById(userId)).Returns(user);
+        //_gradeBooksRepositoryMock.Setup(c => c.GetGradeBook(courseId, userId)).Returns(new GradeBookDto() { Course = course, User = user, Grade = gradeBook.Grade});
+        ////Act
+        //var exception = Assert.Throws<EntityNotFoundException>(() => _sut.UpdateGradeByCourseId(gradeBook.grade));
+        ////Assert
+        //Assert.Equal(message, exception.Message);
+    }
 }

@@ -30,9 +30,9 @@ public class UsersService : IUsersService
         _mapper = new Mapper(config);
     }
 
-    public string? Authenticate(string email, string password)
+    public async Task<string?> AuthenticateAsync(string email, string password)
     {
-        var user = _usersRepository.GetUserByEmail(email);
+        var user = await _usersRepository.GetUserByEmailAsync(email);
 
         if (user != null && user.Password == password)
         {
@@ -60,69 +60,71 @@ public class UsersService : IUsersService
             throw new EntityNotFoundException($"The Email or Password is entered incorrectly, please try again");
     }
 
-    public Guid AddUser(UserModelBll userId)
+    public async Task<Guid> AddUserAsync(UserModelBll userId)
     {
         var newUser = _mapper.Map<UserDto>(userId);
         if (newUser == null)
             throw new EntityNotFoundException($"User with id{userId} was not found.");
 
-        var result = _usersRepository.AddUser(newUser);
+        var result = await _usersRepository.AddUserAsync(newUser);
         return result;
     }
 
-    public void UpdateUser(Guid id, UserModelBll newUser)
+    public async Task UpdateUserAsync(Guid id, UserModelBll User)
     {
-        var user1 = _usersRepository.GetUserById(id);
-        if (user1 == null)
-            throw new EntityNotFoundException($"User1 with id{id} was not found.");
+        var user = await _usersRepository.GetUserByIdAsync(id);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id{id} was not found.");
 
-        var user2 = _mapper.Map<UserDto>(newUser);
-        if (user2 == null)
-            throw new EntityNotFoundException($"User2 with id{id} was not found.");
+        var newUser = _mapper.Map<UserDto>(User);
+        if (newUser == null)
+            throw new EntityNotFoundException($"newUser with id{id} was not found.");
 
-        _usersRepository.UpdateUser(user1, user2);
+        await _usersRepository.UpdateUserAsync(user, newUser);
     }
 
-    public void UpdatePasswordByUserId(Guid id, UserModelBll user)
+    public async Task UpdatePasswordByUserIdAsync(Guid id, UserModelBll user)
     {
-        var userPassword = _usersRepository.GetUserById(id);
+        var userPassword = await _usersRepository.GetUserByIdAsync(id);
         if (userPassword == null)
             throw new EntityNotFoundException($"User with id{id} was not found.");
 
-        _usersRepository.UpdatePasswordByUserId(userPassword, user.Password);
+        await _usersRepository.UpdatePasswordByUserIdAsync(userPassword, user.Password);
     }
 
-    public List<UserModelBll> GetAllUsers()
+    public async Task<List<UserModelBll>> GetAllUsersAsync()
     {
-        var users = _usersRepository.GetAllUsers();
+        var users = await _usersRepository.GetAllUsersAsync();
+        if (users == null)
+            throw new EntityNotFoundException($"Users was not found.");
         var result = _mapper.Map<List<UserModelBll>>(users);
         return result;
     }
 
-    public UserModelBll GetCoursesByUserId(Guid userId)
+    public async Task<UserModelBll> GetUserWithCoursesAndGradesAsync(Guid userId)
     {
-        var courses = _usersRepository.GetCoursesByUserId(userId);
-        if (courses == null)
-            throw new EntityNotFoundException($"Courses with id{userId} was not found.");
-        var result = _mapper.Map<UserModelBll>(courses);
+        var user = await _usersRepository.GetUserWithCoursesAndGradesAsync(userId);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id{userId} was not found.");
+        var result = _mapper.Map<UserModelBll>(user);
         return result;
     }
 
-    public void DeactivateUser(Guid id)
+    public async Task DeactivateUser(Guid id)
     {
-        var user = _usersRepository.GetUserById(id);
+        var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
             throw new EntityNotFoundException($"User with id{id} was not found.");
 
-        _usersRepository.DeactivateUser(user);
+        await _usersRepository.DeactivateUserAsync(user);
     }
 
-    public void DeleteUser(Guid id)
+    public async Task DeleteUserAsync(Guid id)
     {
-        var user = _usersRepository.GetUserById(id);
+        var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
             throw new EntityNotFoundException($"User with id{id} was not found.");
 
-        _usersRepository.DeleteUser(user);
+        await _usersRepository.DeleteUserAsync(user);
     }
 }

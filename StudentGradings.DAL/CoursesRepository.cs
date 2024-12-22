@@ -6,45 +6,44 @@ namespace StudentGradings.DAL
 {
     public class CoursesRepository(StudentGradingsContext context) : ICoursesRepository
     {
-        public Guid AddCourse(CourseDto course)
+        public async Task<Guid> AddCourseAsync(CourseDto course)
         {
             context.Courses.Add(course);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return course.Id;
         }
 
-        public void UpdateCourse(CourseDto course, CourseDto changeCourse)
+        public async Task UpdateCourseAsync(CourseDto course, CourseDto changeCourse)
         {
             course.Name = changeCourse.Name;
             course.Description = changeCourse.Description;
             course.Hours = changeCourse.Hours;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public CourseDto? GetCourseById(Guid id) => context.Courses.SingleOrDefault(c => c.Id == id);
+        public async Task<CourseDto?> GetCourseByIdAsync(Guid id) => await context.Courses.SingleOrDefaultAsync(c => c.Id == id);
 
-        public List<CourseDto> GetAllCourses()
+        public async Task<List<CourseDto>> GetAllCoursesAsync()
         {
-           return context.Courses.Where(c => c.IsDeactivated == false).ToList();
+            return await context.Courses.Where(c => c.IsDeactivated == false).ToListAsync();
         }
 
-        public List<UserDto> GetUsersByCourseId(Guid courseId)
-        {
-            var course = context.Courses.Where(c => c.Id == courseId).Include(c => c.Users).FirstOrDefault();
-            var students = course.Users.ToList();
-            return students;
-        }
+        public async Task<CourseDto?> GetCourseWithUsersAndGradesAsync(Guid id) =>
+            await context.Courses
+            .Include(c => c.GradeBook)
+            .ThenInclude(c => c.User)
+            .SingleOrDefaultAsync(c => c.Id == id);
 
-        public void DeactivateCourse(CourseDto course)
+        public async Task DeactivateCourseAsync(CourseDto course)
         {
             course.IsDeactivated = true;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void DeleteCourse(CourseDto course)
+        public async Task DeleteCourseAsync(CourseDto course)
         {
             context.Courses.Remove(course);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

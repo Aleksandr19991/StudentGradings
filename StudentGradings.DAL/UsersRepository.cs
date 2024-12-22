@@ -7,59 +7,58 @@ namespace StudentGradings.DAL;
 
 public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 {
-    public Guid AddUser(UserDto user)
+    public async Task<Guid> AddUserAsync(UserDto user)
     {
         context.Users.Add(user);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return user.Id;
     }
 
-    public void UpdateUser(UserDto user, UserDto changeUser)
+    public async Task UpdateUserAsync(UserDto user, UserDto changeUser)
     {
         user.Name = changeUser.Name;
         user.LastName = changeUser.LastName;
         user.Phone = changeUser.Phone;
         user.Email = changeUser.Email;
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public void UpdatePasswordByUserId(UserDto user, string password)
+    public async Task UpdatePasswordByUserIdAsync(UserDto user, string password)
     {
         user.Password = password;
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public UserDto? GetUserById(Guid id) => context.Users.SingleOrDefault(c => c.Id == id);
+    public async Task<UserDto?> GetUserByIdAsync(Guid id) => await context.Users.SingleOrDefaultAsync(c => c.Id == id);
 
-    public UserDto? GetUserByEmail(string email) => context.Users.SingleOrDefault(c => c.Email == email);
+    public async Task<UserDto?> GetUserByEmailAsync(string email) => await context.Users.SingleOrDefaultAsync(c => c.Email == email);
 
-    public void GetUserRoleByUserId(UserDto user, UserRole role)
+    public async Task GetUserRoleByUserIdAsync(UserDto user, UserRole role)
     {
         user.Role = role;
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public List<UserDto> GetAllUsers()
+    public async Task<List<UserDto>> GetAllUsersAsync()
     {
-        return context.Users.Where(c => c.IsDeactivated == false).ToList();
+        return await context.Users.Where(c => c.IsDeactivated == false).ToListAsync();
     }
 
-    public List<CourseDto> GetCoursesByUserId(Guid userId)
-    {
-        var users = context.Users.Where(c => c.Id == userId).Include(c => c.Courses).FirstOrDefault();
-        var courses = users.Courses.ToList();
-        return courses;
-    }
+    public async Task<UserDto?> GetUserWithCoursesAndGradesAsync(Guid id) =>
+        await context.Users
+        .Include(c => c.GradeBook)
+        .ThenInclude(c => c.Course)
+        .SingleOrDefaultAsync(c => c.Id == id);
 
-    public void DeactivateUser(UserDto user)
+    public async Task DeactivateUserAsync(UserDto user)
     {
         user.IsDeactivated = true;
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public void DeleteUser(UserDto user)
+    public async Task DeleteUserAsync(UserDto user)
     {
         context.Users.Remove(user);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }

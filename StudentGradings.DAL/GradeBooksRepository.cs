@@ -1,44 +1,45 @@
-﻿using StudentGradings.DAL.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 
 namespace StudentGradings.DAL;
 
 public class GradeBooksRepository(StudentGradingsContext context) : IGradeBooksRepository
 {
-    public Guid AddGradeBook(GradeBookDto gradeBook)
+    public async Task<Guid> AddGradeBookAsync(GradeBookDto gradeBook)
     {
         context.GradeBooks.Add(gradeBook);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return gradeBook.Id;
     }
 
-    public void AddGradeByCourseId(GradeBookDto gradeBook)
+    public async Task AddGradeByCourseIdAsync(GradeBookDto gradeBook)
     {
         context.GradeBooks.Add(gradeBook);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public void UpdateGrade(GradeBookDto gradeBook, float grade)
+    public async Task UpdateGradeAsync(GradeBookDto gradeBook, float grade)
     {
         gradeBook.Grade = grade;
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
-    public GradeBookDto? GetGradeBook(Guid courseId, Guid userId)
+    public async Task<GradeBookDto?> GetGradeBookAsync(Guid courseId, Guid userId)
     {
-        var gradeBook = context.GradeBooks.Where(c => c.Course.Id == courseId && c.User.Id == userId).SingleOrDefault();
-        return gradeBook;
+        var gradeBook = context.GradeBooks.Where(c => c.Course.Id == courseId && c.User.Id == userId).SingleOrDefaultAsync();
+        return await gradeBook;
     }
 
-    public List<GradeBookDto> GetGradesByCourseId(Guid courseId)
+    public async Task<List<GradeBookDto>> GetGradesByCourseIdAsync(Guid courseId)
     {
-        var gradesCourse = context.GradeBooks.Where(c => c.Id == courseId).ToList();
-        return gradesCourse;
+        var gradesCourse = context.GradeBooks.Where(c => c.Id == courseId).ToListAsync();
+        return await gradesCourse;
     }
 
-    public List<GradeBookDto> GetGradesByUserId(Guid userId)
+    public async Task<List<GradeBookDto>> GetGradesByUserIdAsync(Guid userId)
     {
-        var gradesUser = context.GradeBooks.Where(c => c.Id == userId).ToList();
-        return gradesUser;
+        var gradesUser = context.GradeBooks.Where(c => c.Id == userId).ToListAsync();
+        return await gradesUser;
     }
 }

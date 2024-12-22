@@ -12,5 +12,6 @@ public class UserDto
     public string Password { get; set; }
     public bool IsDeactivated { get; set; }
     public UserRole Role { get; set; }
-    public IEnumerable<CourseDto> Courses { get; set; } = [];
+    public GradeBookDto? GradeBook { get; set; }
+    public IEnumerable<CourseDto>? Courses { get; set; }
 }
