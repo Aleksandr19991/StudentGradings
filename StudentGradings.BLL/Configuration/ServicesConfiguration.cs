@@ -11,6 +11,7 @@ public static class ServicesConfiguration
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<ICoursesService, CoursesService>();
         services.AddScoped<IGradeBooksService, GradeBooksService>();
+        services.AddScoped<IGraduatesService, GraduatesService>();
         services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
     }
 }
