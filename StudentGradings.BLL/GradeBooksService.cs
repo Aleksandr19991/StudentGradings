@@ -49,7 +49,7 @@ public class GradeBooksService : IGradeBooksService
     {
         var gradeBook = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (gradeBook != null)
-            throw new EntityConflictException($"Grade with user id{userId} and course id {userId} already exists.");
+            throw new EntityConflictException($"Grade with user id{userId} and course id{courseId} already exists.");
 
         var course = await _coursesRepository.GetCourseByIdAsync(courseId);
         if (course == null)
@@ -76,11 +76,15 @@ public class GradeBooksService : IGradeBooksService
 
     public async Task UpdateGradeByCourseIdAsync(Guid id, GradeBookModelBll gradeBook)
     {
-        var gradeCourse = await _gradeBooksRepository.GetGradeBookAsync(gradeBook.CourseId, gradeBook.UserId);
-        if (gradeCourse == null)
-            throw new EntityNotFoundException($"GradeBook with course id{gradeBook.CourseId} and user{gradeBook.UserId} id was not found.");
+        var book = await _gradeBooksRepository.GetGradeBookAsync(gradeBook.CourseId, gradeBook.UserId);
+        if (book == null)
+            throw new EntityNotFoundException($"GradeBook with course id{gradeBook.CourseId} and user id{gradeBook.UserId} id was not found.");
 
-        await _gradeBooksRepository.UpdateGradeAsync(gradeCourse, gradeBook.Grade);
+        var newGradeBook = _mapper.Map<GradeBookDto>(gradeBook);
+        if (newGradeBook == null)
+            throw new EntityNotFoundException($"NewGradeBook with id{id} was not found.");
+
+        await _gradeBooksRepository.UpdateGradeByCourseIdAsync(book, newGradeBook.Grade);
     }
 
     public async Task<GradeBookModelBll> GetGradeBookAsync(Guid courseId, Guid userId)

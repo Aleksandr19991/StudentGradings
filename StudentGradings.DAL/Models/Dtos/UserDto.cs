@@ -13,5 +13,6 @@ public class UserDto
     public bool IsDeactivated { get; set; }
     public UserRole Role { get; set; }
     public GradeBookDto? GradeBook { get; set; }
-    public IEnumerable<CourseDto>? Courses { get; set; }
+    public ICollection<GradeBookDto>? GradeBooks { get; set; }
+    public ICollection<CourseDto>? Courses { get; set; }
 }

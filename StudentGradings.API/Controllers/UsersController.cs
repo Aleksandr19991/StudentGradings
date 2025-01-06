@@ -16,7 +16,7 @@ namespace StudentGradings.API.Controllers;
 public class UsersController(IUsersService usersService, IMapper mapper) : ControllerBase
 {
     // POST api/users
-    [HttpPost]
+    [HttpPost, AllowAnonymous]
     //[CustomAuthorize([UserRole.Administrator])]
     public async Task<ActionResult<Guid>> RegisterUserAsync([FromBody] RegisterUserRequest request)
     {
@@ -26,7 +26,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     }
 
     //"api/users/login"
-    [HttpPost("login")]
+    [HttpPost("login"), AllowAnonymous]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public async Task<ActionResult<string>> LogInAsync([FromBody] LoginRequest request)
     {
@@ -46,7 +46,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     }
 
     // GET api/users/5
-    [HttpGet("{id}/courses")]
+    [HttpGet("{id}")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
     public async Task<ActionResult<List<UserWithCoursesAndGradesResponse>>> GetUserWithCoursesAndGradesAsync([FromBody] Guid id)
     {

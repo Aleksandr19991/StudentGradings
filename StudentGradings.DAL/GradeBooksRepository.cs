@@ -19,7 +19,7 @@ public class GradeBooksRepository(StudentGradingsContext context) : IGradeBooksR
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateGradeAsync(GradeBookDto gradeBook, float grade)
+    public async Task UpdateGradeByCourseIdAsync(GradeBookDto gradeBook, float grade)
     {
         gradeBook.Grade = grade;
         await context.SaveChangesAsync();

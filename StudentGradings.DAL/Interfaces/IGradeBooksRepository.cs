@@ -9,6 +9,6 @@ namespace StudentGradings.DAL.Interfaces
         Task<GradeBookDto?> GetGradeBookAsync(Guid courseId, Guid userId);
         Task<List<GradeBookDto>> GetGradesByCourseIdAsync(Guid courseId);
         Task<List<GradeBookDto>> GetGradesByUserIdAsync(Guid userId);
-        Task UpdateGradeAsync(GradeBookDto gradeBook, float grade);
+        Task UpdateGradeByCourseIdAsync(GradeBookDto gradeBook, float grade);
     }
 }

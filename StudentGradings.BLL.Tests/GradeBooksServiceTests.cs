@@ -1,5 +1,6 @@
 using Moq;
 using StudentGradings.BLL.Exeptions;
+using StudentGradings.BLL.Models;
 using StudentGradings.CORE;
 using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
@@ -20,18 +21,37 @@ public class GradeBooksServiceTests
         _sut = new GradeBooksService(_gradeBooksRepositoryMock.Object, _coursesRepositoryMock.Object, _usersRepositoryMock.Object);
     }
 
+    //[Fact]
+    //public async Task AddGradeByCourseIdAsync_ExistingActiveCourseAndExistingActiveUser_StudentReceivedGrade()
+    //{
+    //    //Arrange
+    //    var courseId = Guid.NewGuid();
+    //    var userId = Guid.NewGuid();
+    //    _coursesRepositoryMock.Setup(c => c.GetCourseByIdAsync(courseId)).ReturnsAsync(new CourseDto() { Id = courseId });
+    //    _usersRepositoryMock.Setup(c => c.GetUserByIdAsync(userId)).ReturnsAsync(new UserDto() { Id = userId, Role = UserRole.Student });
+    //    //Act
+    //    await _sut.AddGradeByCourseIdAsync(courseId, userId);
+    //    //Assert
+    //    _gradeBooksRepositoryMock.Verify(c => c.AddGradeByCourseIdAsync(It.IsAny<GradeBookDto>()), Times.Once);
+    //}
+
     [Fact]
     public async Task AddGradeByCourseIdAsync_ExistingActiveCourseAndExistingActiveUser_StudentReceivedGrade()
     {
         //Arrange
         var courseId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        _coursesRepositoryMock.Setup(c => c.GetCourseByIdAsync(courseId)).ReturnsAsync(new CourseDto() { Id = courseId });
-        _usersRepositoryMock.Setup(c => c.GetUserByIdAsync(userId)).ReturnsAsync(new UserDto() { Id = userId, Role = UserRole.Student });
+        var existingCourse = new CourseDto() { Id = courseId };
+        var existingStudent = new UserDto() { Id = userId, Role = UserRole.Student };
+        _coursesRepositoryMock.Setup(c => c.GetCourseByIdAsync(courseId)).ReturnsAsync(existingCourse);
+        _usersRepositoryMock.Setup(c => c.GetUserByIdAsync(userId)).ReturnsAsync(existingStudent);
         //Act
         await _sut.AddGradeByCourseIdAsync(courseId, userId);
         //Assert
-        _gradeBooksRepositoryMock.Verify(c => c.AddGradeByCourseIdAsync(It.IsAny<GradeBookDto>()), Times.Once);
+        _gradeBooksRepositoryMock.Verify(c => 
+            c.AddGradeByCourseIdAsync(It.Is<GradeBookDto>(c => c.Course == existingCourse && c.User == existingStudent)),
+            Times.Once
+        );
     }
 
     [Fact]
@@ -96,7 +116,7 @@ public class GradeBooksServiceTests
         var userId = Guid.NewGuid();
         var course = new CourseDto() { Id = courseId };
         var user = new UserDto() { Id = userId, Role = UserRole.Student };
-        var message = $"Grade with user id{userId} and course id {userId} already exists.";
+        var message = $"Grade with user id{userId} and course id{courseId} already exists.";
         _coursesRepositoryMock.Setup(c => c.GetCourseByIdAsync(courseId)).ReturnsAsync(course);
         _usersRepositoryMock.Setup(c => c.GetUserByIdAsync(userId)).ReturnsAsync(user);
         _gradeBooksRepositoryMock.Setup(c => c.GetGradeBookAsync(courseId, userId)).ReturnsAsync(new GradeBookDto() { Course = course, User = user });
@@ -106,21 +126,45 @@ public class GradeBooksServiceTests
         Assert.Equal(message, exception.Message);
     }
 
+    [Fact]
+    public async Task UpdateGradeByCourseIdAsync_ExistingActiveGradeBookAndExistingActiveNewGradeBook_TeacherChangeGrade()
+    {
+        //Arrange
+        var id = Guid.NewGuid();
+        var courseId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var gradeBook = new GradeBookModelBll();
+        _gradeBooksRepositoryMock.Setup(c => c.GetGradeBookAsync(gradeBook.CourseId,gradeBook.UserId)).ReturnsAsync(new GradeBookDto() {});
+        //Act
+        await _sut.UpdateGradeByCourseIdAsync(id, gradeBook);
+        //Assert
+        _gradeBooksRepositoryMock.Verify(c => c.UpdateGradeByCourseIdAsync(It.IsAny<GradeBookDto>(),gradeBook.Grade), Times.Once);
+    }
+
+
+    [Fact]
+    public async Task UpdateGradeByCourseIdAsync_NotExistingGradeBookSent_EntityNotFoundExceptionThrown()
+    {
+        //Arrange
+        var courseId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var gradeBook = new GradeBookModelBll();
+        var message = $"GradeBook with course id{gradeBook.CourseId} and user id{gradeBook.UserId} id was not found.";
+        //Act
+        var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _sut.UpdateGradeByCourseIdAsync(Guid.NewGuid(), gradeBook));
+        //Assert
+        Assert.Equal(message, exception.Message);
+    }
+
     //[Fact]
-    //public void UpdateGradeByCourseId_NotExistingCourseSent_EntityNotFoundExceptionThrown()
+    //public async Task UpdateGradeByCourseIdAsync_NotExistingNewGradeBookSent_EntityNotFoundExceptionThrown()
     //{
     //    //Arrange
-    //    var courseId = Guid.NewGuid();
-    //    var userId = Guid.NewGuid();
-    //    var course = new CourseDto() { Id = courseId };
-    //    var user = new UserDto() { Id = userId, Role = UserRole.Student };
-    //    var gradeBook = new GradeBookDto() { };
-    //    var message = $"GradeBook with course id{gradeBook.CourseId} and user{gradeBook.UserId} id was not found.";
-    //    _coursesRepositoryMock.Setup(c => c.GetCourseById(courseId)).Returns(course);
-    //    _usersRepositoryMock.Setup(c => c.GetUserById(userId)).Returns(user);
-    //    _gradeBooksRepositoryMock.Setup(c => c.GetGradeBook(courseId, userId)).Returns(new GradeBookDto() { Course = course, User = user, Grade = gradeBook.Grade });
+    //    var id = Guid.NewGuid();
+    //    var gradeBook = new GradeBookModelBll();
+    //    var message = $"NewGradeBook with id{id} was not found.";
     //    //Act
-    //    var exception = Assert.Throws<EntityNotFoundException>(() => _sut.UpdateGradeByCourseId(gradeBook.grade));
+    //    var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _sut.UpdateGradeByCourseIdAsync(Guid.NewGuid(), gradeBook));
     //    //Assert
     //    Assert.Equal(message, exception.Message);
     //}
