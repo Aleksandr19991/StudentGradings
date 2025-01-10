@@ -14,11 +14,6 @@ public class StudentGradingsContext : DbContext
     {
     }
 
-    //public StudentGradingsContext(DbContextOptions options) : base(options)
-    //{
-    //    Database.EnsureCreated();
-    //}
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.AddCourseEntityConfiguration();

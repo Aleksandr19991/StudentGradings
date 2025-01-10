@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudentGradings.API.Configuration;
-using StudentGradings.API.Models;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 using StudentGradings.BLL.Interfaces;
@@ -45,7 +43,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
         }
     }
 
-    // GET api/users/5
+    //GET api/users/5
     [HttpGet("{id}")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
     public async Task<ActionResult<List<UserWithCoursesAndGradesResponse>>> GetUserWithCoursesAndGradesAsync([FromBody] Guid id)

@@ -12,5 +12,4 @@ public class UserModelBll
     public string Password { get; set; }
     public UserRole Role { get; set; }
     public GradeBookModelBll? GradeBook { get; set; }
-    IEnumerable<CourseModelBll>? Courses { get; set; }
 }

@@ -30,7 +30,7 @@ namespace StudentGradings.DAL
 
         public async Task<CourseDto?> GetCourseWithUsersAndGradesAsync(Guid id) =>
             await context.Courses
-            .Include(c => c.GradeBook)
+            .Include(c => c.GradeBooks)
             .ThenInclude(c => c.User)
             .SingleOrDefaultAsync(c => c.Id == id);
 

@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using StudentGradings.API.Configuration;
-using StudentGradings.API.Models;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
 using StudentGradings.BLL.Interfaces;
@@ -20,7 +18,7 @@ public class CoursesController(
     // POST api/<CoursesController>
     [HttpPost]
     //[CustomAuthorize([UserRole.Administrator])]
-    public async Task<ActionResult<Guid>> CreateCourseAsync ([FromBody] CreateCourseRequest request)
+    public async Task<ActionResult<Guid>> CreateCourseAsync([FromBody] CreateCourseRequest request)
     {
         var courseId = mapper.Map<CourseModelBll>(request);
         var addedCourseId = await coursesService.AddCourseAsync(courseId);
@@ -36,7 +34,7 @@ public class CoursesController(
         return NoContent();
     }
 
-    // GET api/<CoursesController>
+    //GET api/<CoursesController>
     [HttpGet("{id}/users")]
     //[CustomAuthorize([UserRole.Teacher])]
     public async Task<ActionResult<List<CourseWithUsersAndGradesResponse>>> GetCourseWithUsersAndGradesAsync([FromRoute] Guid id)
@@ -46,7 +44,7 @@ public class CoursesController(
         return Ok(students);
     }
 
-    // GET api/<CoursesController>
+    //GET api/<CoursesController>
     [HttpGet("{id}/grades")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
     public async Task<ActionResult<List<GradeBookResponse>>> GetGradesByCoursesIdAsync([FromRoute] Guid id)

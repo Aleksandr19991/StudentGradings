@@ -8,7 +8,7 @@ namespace StudentGradings.API.Controllers;
 [Route("api/graduate")]
 public class GraduateController(IGraduatesService graduatesService) : ControllerBase
 {
-    
+
     [HttpPost]
     public void SendGraduate()
     {

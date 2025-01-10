@@ -8,8 +8,8 @@ internal static class CourseEntityConfiguration
     internal static void AddCourseEntityConfiguration(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CourseDto>()
-           .HasMany(c => c.Users)
-           .WithMany(c => c.Courses);
+            .ToTable("Courses")
+            .HasKey(c => c.Id);
 
         modelBuilder.Entity<CourseDto>()
             .Property(c => c.Name)

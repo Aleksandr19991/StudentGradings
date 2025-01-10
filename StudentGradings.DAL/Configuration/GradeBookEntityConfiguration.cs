@@ -8,15 +8,21 @@ namespace StudentGradings.DAL.Configuration
         internal static void AddGradeBookEntityConfiguration(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GradeBookDto>()
+                .ToTable("GradeBooks")
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<GradeBookDto>()
                 .HasKey(c => new { c.UserId, c.CourseId });
 
             modelBuilder.Entity<GradeBookDto>()
-                .HasOne(c => c.User)
-                .WithMany(c => c.GradeBooks).HasForeignKey(c => c.UserId);
+                .HasOne(cc => cc.User)
+                .WithMany(c => c.GradeBooks)
+                .HasForeignKey(c => c.UserId);
 
             modelBuilder.Entity<GradeBookDto>()
-                .HasOne(c => c.Course)
-                .WithMany(c => c.GradeBooks).HasForeignKey(c => c.CourseId);
+                .HasOne(cc => cc.Course)
+                .WithMany(c => c.GradeBooks)
+                .HasForeignKey(cc => cc.CourseId);
         }
     }
 }

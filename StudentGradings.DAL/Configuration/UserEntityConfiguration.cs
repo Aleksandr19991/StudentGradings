@@ -8,8 +8,8 @@ internal static class UserEntityConfiguration
     internal static void AddUserEntityConfiguration(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserDto>()
-            .HasMany(c => c.Courses)
-            .WithMany(c => c.Users);
+            .ToTable("Users")
+            .HasKey(c => c.Id);
 
         modelBuilder.Entity<UserDto>()
             .Property(c => c.Name)
@@ -21,7 +21,7 @@ internal static class UserEntityConfiguration
 
         modelBuilder.Entity<UserDto>()
             .Property(c => c.Phone)
-            .HasMaxLength(13);
+            .HasMaxLength(18);
 
         modelBuilder.Entity<UserDto>()
             .Property(c => c.Password)
@@ -34,6 +34,6 @@ internal static class UserEntityConfiguration
         modelBuilder.Entity<UserDto>()
             .Property(c => c.Email)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(49);
     }
 }

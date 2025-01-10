@@ -12,7 +12,5 @@ public class UserDto
     public string Password { get; set; }
     public bool IsDeactivated { get; set; }
     public UserRole Role { get; set; }
-    public GradeBookDto? GradeBook { get; set; }
-    public ICollection<GradeBookDto>? GradeBooks { get; set; }
-    public ICollection<CourseDto>? Courses { get; set; }
+    public ICollection<GradeBookDto> GradeBooks { get; set; } = [];
 }
