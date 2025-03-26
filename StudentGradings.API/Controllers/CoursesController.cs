@@ -25,8 +25,18 @@ public class CoursesController(
         return Ok(addedCourseId);
     }
 
+    // POST api/<CoursesController>
+    [HttpPost("gradeBook")]
+    //[CustomAuthorize([UserRole.Administrator])]
+    public async Task<ActionResult<Guid>> CreateGradeBookAsync([FromBody] CreateGradeBookRequest request)
+    {
+        var gradeBookId = mapper.Map<GradeBookModelBll>(request);
+        var addedGradeBookId = await gradeBooksService.AddGradeBookAsync(gradeBookId);
+        return Ok(addedGradeBookId);
+    }
+
     //POST api/<CoursesController>
-    [HttpPost("{id}/grade")]
+    [HttpPost("grade")]
     //[CustomAuthorize([UserRole.Teacher])]
     public async Task<IActionResult> AddGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] AddGradeRequest request)
     {

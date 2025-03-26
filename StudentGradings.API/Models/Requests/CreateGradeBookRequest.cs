@@ -1,8 +1,7 @@
-﻿namespace StudentGradings.API.Models.Responses;
+﻿namespace StudentGradings.API.Models.Requests;
 
-public class GradeBookResponse
+public class CreateGradeBookRequest
 {
-    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public Guid CourseId { get; set; }
     public float Grade { get; set; }
