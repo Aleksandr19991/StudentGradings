@@ -13,7 +13,7 @@ public class GraduateController(IGraduatesService graduatesService) : Controller
     public void SendGraduate()
     {
         // validate the data
-        graduatesService.SendGraduate(new GraduateModelBll { UserId = 5 });
+        graduatesService.SendGraduate(new GraduateModel { UserId = 5 });
         // send a response
     }
 }

@@ -1,9 +1,9 @@
-﻿using StudentGradings.BLL.Models;
+﻿using StudentGradings.BLL.Models.UserGraduate;
 
 namespace StudentGradings.BLL.Interfaces
 {
     public interface IGraduatesService
     {
-        void SendGraduate(GraduateModelBll order);
+        void SendGraduate(GraduateModel order);
     }
 }

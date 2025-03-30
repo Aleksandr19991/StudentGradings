@@ -3,6 +3,7 @@ using Moq;
 using Moq.Protected;
 using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Models;
+using StudentGradings.BLL.Models.UserGraduate;
 using System.Net;
 using System.Text.Json;
 
@@ -42,7 +43,7 @@ public class GraduateServiceTests
                 Content = new StringContent(response)
             });
         //Act
-        _sut.SendGraduate(new GraduateModelBll { UserId = userId });
+        _sut.SendGraduate(new GraduateModel { UserId = userId });
         //Assert
     }
 }

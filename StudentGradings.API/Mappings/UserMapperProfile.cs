@@ -10,13 +10,13 @@ public class UserMapperProfile : Profile
 {
     public UserMapperProfile()
     {
-        CreateMap<RegisterUserRequest, UserModelBll>();
-        CreateMap<UserModelBll, UserResponse>();
-        CreateMap<UserModelBll, UserWithCoursesAndGradesResponse>();
-        CreateMap<LoginRequest, UserModelBll>();
-        CreateMap<UserModelBll, AuthenticatedResponse>();
+        CreateMap<RegisterUserRequest, UserModel>();
+        CreateMap<UserModel, UserResponse>();
+        CreateMap<UserModel, UserWithCoursesAndGradesResponse>();
+        CreateMap<LoginRequest, UserModel>();
+        CreateMap<UserModel, AuthenticatedResponse>();
         CreateMap<AddGradeRequest, GradeBookResponse>();
-        CreateMap<UserRole, UserModelBll>();
-        CreateMap<UserModelBll, UserResponse>();
+        CreateMap<UserRole, UserModel>();
+        CreateMap<UserModel, UserResponse>();
     }
 }

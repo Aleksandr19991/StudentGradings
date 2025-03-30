@@ -11,8 +11,8 @@ namespace StudentGradings.DAL.Interfaces
         Task<List<UserDto>> GetAllUsersAsync();
         Task<UserDto?> GetUserByEmailAsync(string email);
         Task<UserDto?> GetUserByIdAsync(Guid id);
-        Task GetUserRoleByUserIdAsync(UserDto user, UserRole role);
         Task<UserDto?> GetUserWithCoursesAndGradesAsync(Guid id);
+        Task SetUserRoleByUserIdAsync(UserDto user, UserRole role);
         Task UpdatePasswordByUserIdAsync(UserDto user, string password);
         Task UpdateUserAsync(UserDto user, UserDto changeUser);
     }

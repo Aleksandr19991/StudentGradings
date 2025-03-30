@@ -8,7 +8,7 @@ public class CourseMapperProfile : Profile
 {
     public CourseMapperProfile()
     {
-        CreateMap<CourseModelBll, CourseDto>();
-        CreateMap<CourseDto, CourseModelBll>();
+        CreateMap<CourseModel, CourseDto>();
+        CreateMap<CourseDto, CourseModel>();
     }
 }

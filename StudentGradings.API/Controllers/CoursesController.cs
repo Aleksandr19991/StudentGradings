@@ -20,7 +20,7 @@ public class CoursesController(
     //[CustomAuthorize([UserRole.Administrator])]
     public async Task<ActionResult<Guid>> CreateCourseAsync([FromBody] CreateCourseRequest request)
     {
-        var courseId = mapper.Map<CourseModelBll>(request);
+        var courseId = mapper.Map<CourseModel>(request);
         var addedCourseId = await coursesService.AddCourseAsync(courseId);
         return Ok(addedCourseId);
     }
@@ -30,7 +30,7 @@ public class CoursesController(
     //[CustomAuthorize([UserRole.Administrator])]
     public async Task<ActionResult<Guid>> CreateGradeBookAsync([FromBody] CreateGradeBookRequest request)
     {
-        var gradeBookId = mapper.Map<GradeBookModelBll>(request);
+        var gradeBookId = mapper.Map<GradeBookModel>(request);
         var addedGradeBookId = await gradeBooksService.AddGradeBookAsync(gradeBookId);
         return Ok(addedGradeBookId);
     }
@@ -69,7 +69,7 @@ public class CoursesController(
     //[CustomAuthorize([UserRole.Administrator])]
     public async Task<IActionResult> UpdateCourseAsync([FromRoute] Guid id, [FromBody] UpdateCourseRequest request)
     {
-        var course = mapper.Map<CourseModelBll>(request);
+        var course = mapper.Map<CourseModel>(request);
         await coursesService.UpdateCourseAsync(id, course);
         return NoContent();
     }
@@ -88,7 +88,7 @@ public class CoursesController(
     //[CustomAuthorize([UserRole.Teacher])]
     public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] UpdateGradeByCourseRequest request)
     {
-        var grade = mapper.Map<GradeBookModelBll>(request);
+        var grade = mapper.Map<GradeBookModel>(request);
         await gradeBooksService.UpdateGradeByCourseIdAsync(id, grade);
         return NoContent();
     }

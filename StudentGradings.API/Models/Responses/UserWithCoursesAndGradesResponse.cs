@@ -11,6 +11,6 @@ public class UserWithCoursesAndGradesResponse
     public string Phone { get; set; }
     public string Email { get; set; }
     public UserRole Role { get; set; }
-    public GradeBookModelBll? GradeBook { get; set; }
+    public GradeBookModel? GradeBook { get; set; }
     public List<CourseResponse>? Courses { get; set; }
 }

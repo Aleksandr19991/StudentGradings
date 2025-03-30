@@ -133,7 +133,7 @@ public class GradeBooksServiceTests
         var id = Guid.NewGuid();
         var courseId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var gradeBook = new GradeBookModelBll();
+        var gradeBook = new GradeBookModel();
         _gradeBooksRepositoryMock.Setup(c => c.GetGradeBookAsync(gradeBook.CourseId,gradeBook.UserId)).ReturnsAsync(new GradeBookDto() {});
         //Act
         await _sut.UpdateGradeByCourseIdAsync(id, gradeBook);
@@ -148,7 +148,7 @@ public class GradeBooksServiceTests
         //Arrange
         var courseId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var gradeBook = new GradeBookModelBll();
+        var gradeBook = new GradeBookModel();
         var message = $"GradeBook with course id{gradeBook.CourseId} and user id{gradeBook.UserId} id was not found.";
         //Act
         var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _sut.UpdateGradeByCourseIdAsync(Guid.NewGuid(), gradeBook));

@@ -15,31 +15,32 @@ public class GradeBooksRepository(StudentGradingsContext context) : IGradeBooksR
 
     public async Task AddGradeByCourseIdAsync(GradeBookDto gradeBook)
     {
+        var existingGradeBook = await context.GradeBooks
+            .FirstOrDefaultAsync(g => g.Course.Id == gradeBook.Course.Id && g.User.Id == gradeBook.User.Id);
         context.GradeBooks.Add(gradeBook);
         await context.SaveChangesAsync();
     }
 
     public async Task UpdateGradeByCourseIdAsync(GradeBookDto gradeBook, float grade)
     {
-        gradeBook.Grade = grade;
+        var existingGradeBook = await context.GradeBooks
+           .FirstOrDefaultAsync(g => g.Course.Id == gradeBook.Course.Id && g.User.Id == gradeBook.User.Id);
+        existingGradeBook.Grade = grade;
         await context.SaveChangesAsync();
     }
 
     public async Task<GradeBookDto?> GetGradeBookAsync(Guid courseId, Guid userId)
     {
-        var gradeBook = context.GradeBooks.Where(c => c.Course.Id == courseId && c.User.Id == userId).SingleOrDefaultAsync();
-        return await gradeBook;
+        return await context.GradeBooks.FirstOrDefaultAsync(c => c.Course.Id == courseId && c.User.Id == userId);
     }
 
     public async Task<List<GradeBookDto>> GetGradesByCourseIdAsync(Guid courseId)
     {
-        var gradesCourse = context.GradeBooks.Where(c => c.Id == courseId).ToListAsync();
-        return await gradesCourse;
+        return await context.GradeBooks.Where(c => c.Course.Id == courseId).ToListAsync();
     }
 
     public async Task<List<GradeBookDto>> GetGradesByUserIdAsync(Guid userId)
     {
-        var gradesUser = context.GradeBooks.Where(c => c.Id == userId).ToListAsync();
-        return await gradesUser;
+        return await context.GradeBooks.Where(c => c.User.Id == userId).ToListAsync();
     }
 }

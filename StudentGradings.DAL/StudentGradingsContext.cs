@@ -18,6 +18,6 @@ public class StudentGradingsContext : DbContext
     {
         modelBuilder.AddCourseEntityConfiguration();
         modelBuilder.AddUserEntityConfiguration();
-        modelBuilder.AddGradeBookEntityConfiguration(); ;
+        modelBuilder.AddGradeBookEntityConfiguration();
     }
 }

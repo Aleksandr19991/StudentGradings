@@ -9,9 +9,9 @@ namespace StudentGradings.API.Mappings
     {
         public CourseMapperProfile()
         {
-            CreateMap<CreateCourseRequest, CourseModelBll>();
-            CreateMap<CourseModelBll, CourseResponse>();
-            CreateMap<CourseModelBll, CourseWithUsersAndGradesResponse>();
+            CreateMap<CreateCourseRequest, CourseModel>();
+            CreateMap<CourseModel, CourseResponse>();
+            CreateMap<CourseModel, CourseWithUsersAndGradesResponse>();
         }
     }
 }

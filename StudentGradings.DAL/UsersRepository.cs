@@ -33,7 +33,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task<UserDto?> GetUserByEmailAsync(string email) => await context.Users.SingleOrDefaultAsync(c => c.Email == email);
 
-    public async Task GetUserRoleByUserIdAsync(UserDto user, UserRole role)
+    public async Task SetUserRoleByUserIdAsync(UserDto user, UserRole role)
     {
         user.Role = role;
         await context.SaveChangesAsync();

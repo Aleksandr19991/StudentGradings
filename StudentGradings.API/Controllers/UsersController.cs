@@ -18,7 +18,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     //[CustomAuthorize([UserRole.Administrator])]
     public async Task<ActionResult<Guid>> RegisterUserAsync([FromBody] RegisterUserRequest request)
     {
-        var userId = mapper.Map<UserModelBll>(request);
+        var userId = mapper.Map<UserModel>(request);
         var addedUserId = await usersService.AddUserAsync(userId);
         return Ok(addedUserId);
     }
@@ -66,7 +66,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
         if (id != userId)
             return Forbid();
 
-        var user = mapper.Map<UserModelBll>(request);
+        var user = mapper.Map<UserModel>(request);
         await usersService.UpdateUserAsync(id, user);
         return NoContent();
     }
@@ -85,7 +85,7 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
     public async Task<IActionResult> UpdatePasswordByUserIdAsync([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
     {
-        var password = mapper.Map<UserModelBll>(request.Password);
+        var password = mapper.Map<UserModel>(request.Password);
         await usersService.UpdatePasswordByUserIdAsync(id, password);
         return NoContent();
     }

@@ -1,4 +1,4 @@
-﻿namespace StudentGradings.BLL.Models;
+﻿namespace StudentGradings.BLL.Models.UserGraduate;
 
 public class Geo
 {

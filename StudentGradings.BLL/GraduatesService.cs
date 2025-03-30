@@ -1,6 +1,6 @@
 ﻿using StudentGradings.BLL.Integrations;
 using StudentGradings.BLL.Interfaces;
-using StudentGradings.BLL.Models;
+using StudentGradings.BLL.Models.UserGraduate;
 
 namespace StudentGradings.BLL;
 
@@ -13,7 +13,7 @@ public class GraduatesService : IGraduatesService
         _httpClient = new CommonHttpClient<UserGraduate>("https://jsonplaceholder.typicode.com/", handler);
     }
 
-    public void SendGraduate(GraduateModelBll order)
+    public void SendGraduate(GraduateModel order)
     {
         // check bussines rules against some order
         var user = _httpClient.SendGetRequest($"users/{order.UserId}");

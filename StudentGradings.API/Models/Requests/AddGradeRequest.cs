@@ -5,7 +5,7 @@ namespace StudentGradings.API.Models.Requests
     public class AddGradeRequest
     {
         public float Grade { get; set; }
-        public UserModelBll User { get; set; }
-        public CourseModelBll Course { get; set; }
+        public UserModel User { get; set; }
+        public CourseModel Course { get; set; }
     }
 }

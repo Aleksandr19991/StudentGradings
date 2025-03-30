@@ -25,7 +25,7 @@ public class CoursesService : ICoursesService
         _mapper = new Mapper(config);
     }
 
-    public async Task<Guid> AddCourseAsync(CourseModelBll courseId)
+    public async Task<Guid> AddCourseAsync(CourseModel courseId)
     {
         var newCourse = _mapper.Map<CourseDto>(courseId);
         if (newCourse == null)
@@ -36,7 +36,7 @@ public class CoursesService : ICoursesService
         return result;
     }
 
-    public async Task UpdateCourseAsync(Guid id, CourseModelBll newCourseId)
+    public async Task UpdateCourseAsync(Guid id, CourseModel newCourseId)
     {
         var course = await _coursesRepository.GetCourseByIdAsync(id);
         if (course == null)
@@ -49,32 +49,32 @@ public class CoursesService : ICoursesService
         await _coursesRepository.UpdateCourseAsync(course, newCourse);
     }
 
-    public async Task<CourseModelBll> GetCourseByIdAsync(Guid id)
+    public async Task<CourseModel> GetCourseByIdAsync(Guid id)
     {
         var course = await _coursesRepository.GetCourseByIdAsync(id);
         if (course == null)
             throw new EntityNotFoundException($"Course with id{id} was not found.");
 
-        var result = _mapper.Map<CourseModelBll>(course);
+        var result = _mapper.Map<CourseModel>(course);
         return result;
     }
 
-    public async Task<List<CourseModelBll>> GetAllCoursesAsync()
+    public async Task<List<CourseModel>> GetAllCoursesAsync()
     {
         var courses = await _coursesRepository.GetAllCoursesAsync();
         if (courses == null)
             throw new EntityNotFoundException($"Courses was not found.");
-        var result = _mapper.Map<List<CourseModelBll>>(courses);
+        var result = _mapper.Map<List<CourseModel>>(courses);
         return result;
     }
 
-    public async Task<CourseModelBll> GetCourseWithUsersAndGradesAsync(Guid courseId)
+    public async Task<CourseModel> GetCourseWithUsersAndGradesAsync(Guid courseId)
     {
         var course = await _coursesRepository.GetCourseWithUsersAndGradesAsync(courseId);
         if (course == null)
             throw new EntityNotFoundException($"Course with id{courseId} was not found.");
 
-        var result = _mapper.Map<CourseModelBll>(course);
+        var result = _mapper.Map<CourseModel>(course);
         return result;
     }
 

@@ -4,13 +4,13 @@ namespace StudentGradings.BLL.Interfaces
 {
     public interface IUsersService
     {
-        Task<Guid> AddUserAsync(UserModelBll userId);
+        Task<Guid> AddUserAsync(UserModel userModel);
         Task<string?> AuthenticateAsync(string email, string password);
         Task DeactivateUser(Guid id);
         Task DeleteUserAsync(Guid id);
-        Task<List<UserModelBll>> GetAllUsersAsync();
-        Task<UserModelBll> GetUserWithCoursesAndGradesAsync(Guid userId);
-        Task UpdatePasswordByUserIdAsync(Guid id, UserModelBll user);
-        Task UpdateUserAsync(Guid id, UserModelBll newUser);
+        Task<List<UserModel>> GetAllUsersAsync();
+        Task<UserModel> GetUserWithCoursesAndGradesAsync(Guid userId);
+        Task UpdatePasswordByUserIdAsync(Guid id, string newPassword);
+        Task UpdateUserAsync(Guid id, UserModel user);
     }
 }

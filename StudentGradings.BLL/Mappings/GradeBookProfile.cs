@@ -8,7 +8,7 @@ public class GradeBookProfile : Profile
 {
     public GradeBookProfile()
     {
-        CreateMap<GradeBookModelBll, GradeBookDto>();
-        CreateMap<GradeBookDto, GradeBookModelBll>();
+        CreateMap<GradeBookModel, GradeBookDto>();
+        CreateMap<GradeBookDto, GradeBookModel>();
     }
 }

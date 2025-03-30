@@ -2,7 +2,7 @@
 
 namespace StudentGradings.BLL.Models;
 
-public class UserModelBll
+public class UserModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -11,5 +11,5 @@ public class UserModelBll
     public string Email { get; set; }
     public string Password { get; set; }
     public UserRole Role { get; set; }
-    public GradeBookModelBll? GradeBook { get; set; }
+    public GradeBookModel? GradeBook { get; set; }
 }
