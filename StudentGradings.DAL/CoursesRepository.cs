@@ -36,13 +36,15 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
 
     public async Task DeactivateCourseAsync(CourseDto course)
     {
-        course.IsDeactivated = true;
+        var existingCourse = await context.Courses.FirstOrDefaultAsync(c => c.Id == course.Id);
+        existingCourse.IsDeactivated = true;
         await context.SaveChangesAsync();
     }
 
     public async Task DeleteCourseAsync(CourseDto course)
     {
-        context.Courses.Remove(course);
+        var courseToRemove = await context.Courses.FindAsync(course.Id);
+        context.Courses.Remove(courseToRemove);
         await context.SaveChangesAsync();
     }
 }

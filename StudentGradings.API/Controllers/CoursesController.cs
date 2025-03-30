@@ -83,15 +83,15 @@ public class CoursesController(
         return NoContent();
     }
 
-    // PATCH api/<UsersController>
-    [HttpPatch("{id}/grade")]
-    //[CustomAuthorize([UserRole.Teacher])]
-    public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] UpdateGradeByCourseRequest request)
-    {
-        var grade = mapper.Map<GradeBookModel>(request);
-        await gradeBooksService.UpdateGradeByCourseIdAsync(id, grade);
-        return NoContent();
-    }
+    //// PATCH api/<UsersController>
+    //[HttpPatch("{id}/grade")]
+    ////[CustomAuthorize([UserRole.Teacher])]
+    //public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] UpdateGradeByCourseRequest request, Guid courseId)
+    //{
+    //    var grade = mapper.Map<GradeBookModel>(request);
+    //    await gradeBooksService.UpdateGradeByCourseIdAsync(id, grade);
+    //    return NoContent();
+    //}
 
     // PATCH api/<UsersController>
     [HttpPatch("{id}/deactivate")]

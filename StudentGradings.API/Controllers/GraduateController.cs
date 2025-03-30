@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentGradings.BLL.Interfaces;
-using StudentGradings.BLL.Models;
+using StudentGradings.BLL.Models.UserGraduate;
 
 namespace StudentGradings.API.Controllers;
 

@@ -52,13 +52,15 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task DeactivateUserAsync(UserDto user)
     {
-        user.IsDeactivated = true;
+        var existingUser = await context.Users.FirstOrDefaultAsync(c => c.Id == user.Id);
+        existingUser.IsDeactivated = true;
         await context.SaveChangesAsync();
     }
 
     public async Task DeleteUserAsync(UserDto user)
     {
-        context.Users.Remove(user);
+        var userToRemove = await context.Users.FindAsync(user.Id);
+        context.Users.Remove(userToRemove);
         await context.SaveChangesAsync();
     }
 }

@@ -80,13 +80,13 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
         return NoContent();
     }
 
-    // PATCH api/users/5
-    [HttpPatch("{id}/password")]
-    //[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
-    public async Task<IActionResult> UpdatePasswordByUserIdAsync([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
-    {
-        var password = mapper.Map<UserModel>(request.Password);
-        await usersService.UpdatePasswordByUserIdAsync(id, password);
-        return NoContent();
-    }
+    //// PATCH api/users/5
+    //[HttpPatch("{id}/password")]
+    ////[CustomAuthorize([UserRole.Teacher, UserRole.Student, UserRole.Administrator])]
+    //public async Task<IActionResult> UpdatePasswordByUserIdAsync([FromRoute] Guid id, [FromBody] UpdatePasswordByUserRequest request)
+    //{
+    //    var password = mapper.Map<UserModel>(request.Password);
+    //    await usersService.UpdatePasswordByUserIdAsync(id, password);
+    //    return NoContent();
+    //}
 }

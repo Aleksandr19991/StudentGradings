@@ -5,6 +5,7 @@ using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Mappings;
 using StudentGradings.BLL.Models;
 using StudentGradings.CORE;
+using StudentGradings.DAL;
 using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 using System.IdentityModel.Tokens.Jwt;
@@ -64,21 +65,18 @@ public class UsersService : IUsersService
     {
         var newUser = _mapper.Map<UserDto>(userModel);
         if (newUser == null)
-            throw new EntityNotFoundException($"User with id{userModel} was not found.");
+            throw new EntityNotFoundException($"User with id {userModel} was not found.");
 
         return await _usersRepository.AddUserAsync(newUser);
     }
 
-    public async Task UpdateUserAsync(Guid id, UserModel user)
+    public async Task UpdateUserAsync(Guid id, UserModel userModel)
     {
         var existingUser = await _usersRepository.GetUserByIdAsync(id);
         if (existingUser == null)
-            throw new EntityNotFoundException($"User with id{id} was not found.");
+            throw new EntityNotFoundException($"User with id {id} was not found.");
 
-        var newUser = _mapper.Map<UserDto>(user);
-        if (newUser == null)
-            throw new EntityNotFoundException($"newUser with id{id} was not found.");
-
+        var newUser = _mapper.Map<UserDto>(userModel);
         await _usersRepository.UpdateUserAsync(existingUser, newUser);
     }
 
@@ -86,7 +84,7 @@ public class UsersService : IUsersService
     {
         var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found.");
+            throw new EntityNotFoundException($"User with id {id} was not found.");
 
         await _usersRepository.UpdatePasswordByUserIdAsync(user, newPassword);
     }
@@ -101,7 +99,7 @@ public class UsersService : IUsersService
     {
         var user = await _usersRepository.GetUserWithCoursesAndGradesAsync(userId);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{userId} was not found.");
+            throw new EntityNotFoundException($"User with id {userId} was not found.");
 
         return _mapper.Map<UserModel>(user);
     }
@@ -110,7 +108,7 @@ public class UsersService : IUsersService
     {
         var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found.");
+            throw new EntityNotFoundException($"User with id {id} was not found.");
 
         await _usersRepository.DeactivateUserAsync(user);
     }
@@ -119,7 +117,7 @@ public class UsersService : IUsersService
     {
         var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{id} was not found.");
+            throw new EntityNotFoundException($"User with id {id} was not found.");
 
         await _usersRepository.DeleteUserAsync(user);
     }

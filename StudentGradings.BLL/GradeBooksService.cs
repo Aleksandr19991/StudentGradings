@@ -48,21 +48,21 @@ public class GradeBooksService : IGradeBooksService
     {
         var gradeBook = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (gradeBook != null)
-            throw new EntityConflictException($"Grade with user id{userId} and course id{courseId} already exists.");
+            throw new EntityConflictException($"Grade with user id {userId} and course id {courseId} already exists.");
 
         var course = await _coursesRepository.GetCourseByIdAsync(courseId);
         if (course == null)
-            throw new EntityNotFoundException($"Course with id{courseId} was not found.");
+            throw new EntityNotFoundException($"Course with id {courseId} was not found.");
 
         if (course.IsDeactivated)
-            throw new EntityConflictException($"Course with id{courseId} is deactivated.");
+            throw new EntityConflictException($"Course with id {courseId} is deactivated.");
 
         var user = await _usersRepository.GetUserByIdAsync(userId);
         if (user == null)
-            throw new EntityNotFoundException($"User with id{userId} was not found.");
+            throw new EntityNotFoundException($"User with id {userId} was not found.");
 
         if (user.IsDeactivated)
-            throw new EntityConflictException($"User with id{userId} is deactivated.");
+            throw new EntityConflictException($"User with id {userId} is deactivated.");
 
         var newGradeBook = new GradeBookDto()
         {
@@ -77,12 +77,9 @@ public class GradeBooksService : IGradeBooksService
     {
         var book = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (book == null)
-            throw new EntityNotFoundException($"GradeBook with course id{gradeBook.CourseId} and user id{gradeBook.UserId} id was not found.");
+            throw new EntityNotFoundException($"GradeBook with course id {gradeBook.CourseId} and user id {gradeBook.UserId} was not found.");
 
         var newGradeBook = _mapper.Map<GradeBookDto>(gradeBook);
-        if (newGradeBook == null)
-            throw new ArgumentException($"Failed to map GradeBookModel to GradeBookDto.");
-
         await _gradeBooksRepository.UpdateGradeByCourseIdAsync(book, newGradeBook.Grade);
     }
 
@@ -90,7 +87,7 @@ public class GradeBooksService : IGradeBooksService
     {
         var gradebook = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (gradebook == null)
-            throw new EntityNotFoundException($"Gradebook with id{courseId} and with id{userId} was not found.");
+            throw new EntityNotFoundException($"Gradebook with id {courseId} and with id {userId} was not found.");
 
         return _mapper.Map<GradeBookModel>(gradebook);
     }
