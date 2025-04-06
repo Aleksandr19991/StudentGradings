@@ -10,7 +10,7 @@ namespace StudentGradings.BLL.Interfaces
         Task DeleteUserAsync(Guid id);
         Task<List<UserModel>> GetAllUsersAsync();
         Task<UserModel> GetUserWithCoursesAndGradesAsync(Guid userId);
-        Task UpdatePasswordByUserIdAsync(Guid id, string newPassword);
+        Task UpdatePasswordAsync(Guid id, string newPassword);
         Task UpdateUserAsync(Guid id, UserModel user);
     }
 }

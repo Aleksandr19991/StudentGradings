@@ -59,9 +59,6 @@ public class CoursesService : ICoursesService
     public async Task<List<CourseModel>> GetAllCoursesAsync()
     {
         var courses = await _coursesRepository.GetAllCoursesAsync();
-        if (courses == null)
-            throw new EntityNotFoundException($"Courses was not found.");
-
         return _mapper.Map<List<CourseModel>>(courses);
     }
 

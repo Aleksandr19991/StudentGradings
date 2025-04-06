@@ -5,7 +5,6 @@ using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Mappings;
 using StudentGradings.BLL.Models;
 using StudentGradings.CORE;
-using StudentGradings.DAL;
 using StudentGradings.DAL.Interfaces;
 using StudentGradings.DAL.Models.Dtos;
 using System.IdentityModel.Tokens.Jwt;
@@ -63,10 +62,12 @@ public class UsersService : IUsersService
 
     public async Task<Guid> AddUserAsync(UserModel userModel)
     {
-        var newUser = _mapper.Map<UserDto>(userModel);
-        if (newUser == null)
+        if (userModel == null)
+        {
             throw new EntityNotFoundException($"User with id {userModel} was not found.");
+        }
 
+        var newUser = _mapper.Map<UserDto>(userModel);
         return await _usersRepository.AddUserAsync(newUser);
     }
 
@@ -80,7 +81,7 @@ public class UsersService : IUsersService
         await _usersRepository.UpdateUserAsync(existingUser, newUser);
     }
 
-    public async Task UpdatePasswordByUserIdAsync(Guid id, string newPassword)
+    public async Task UpdatePasswordAsync(Guid id, string newPassword)
     {
         var user = await _usersRepository.GetUserByIdAsync(id);
         if (user == null)
@@ -89,10 +90,19 @@ public class UsersService : IUsersService
         await _usersRepository.UpdatePasswordByUserIdAsync(user, newPassword);
     }
 
+    public async Task<UserModel> GetUserByIdAsync(Guid id)
+    {
+        var user = await _usersRepository.GetUserByIdAsync(id);
+        if (user == null)
+            throw new EntityNotFoundException($"User with id {id} was not found.");
+
+        return _mapper.Map<UserModel>(user);
+    }
+
     public async Task<List<UserModel>> GetAllUsersAsync()
     {
         var users = await _usersRepository.GetAllUsersAsync();
-        return users == null ? new List<UserModel>() : _mapper.Map<List<UserModel>>(users);
+        return _mapper.Map<List<UserModel>>(users);
     }
 
     public async Task<UserModel> GetUserWithCoursesAndGradesAsync(Guid userId)

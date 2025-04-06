@@ -16,10 +16,11 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task UpdateUserAsync(UserDto user, UserDto changeUser)
     {
-        user.Name = changeUser.Name;
-        user.LastName = changeUser.LastName;
-        user.Phone = changeUser.Phone;
-        user.Email = changeUser.Email;
+        var existingUser = await context.Users.FirstOrDefaultAsync(c => c.Id == user.Id);
+        existingUser.Name = changeUser.Name;
+        existingUser.LastName = changeUser.LastName;
+        existingUser.Phone = changeUser.Phone;
+        existingUser.Email = changeUser.Email;
         await context.SaveChangesAsync();
     }
 
@@ -41,7 +42,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
-        return await context.Users.Where(c => c.IsDeactivated == false).ToListAsync();
+        return await context.Users.Where(c => c.IsDeactivated == false).ToListAsync() ?? new List<UserDto>();
     }
 
     public async Task<UserDto?> GetUserWithCoursesAndGradesAsync(Guid id) =>
@@ -59,7 +60,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task DeleteUserAsync(UserDto user)
     {
-        var userToRemove = await context.Users.FindAsync(user.Id);
+        var userToRemove = await context.Users.FirstOrDefaultAsync(c => c.Id == user.Id);
         context.Users.Remove(userToRemove);
         await context.SaveChangesAsync();
     }

@@ -40,7 +40,7 @@ public class CoursesController(
     //[CustomAuthorize([UserRole.Teacher])]
     public async Task<IActionResult> AddGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] AddGradeRequest request)
     {
-        await gradeBooksService.AddGradeByCourseIdAsync(id, request.User.Id);
+        await gradeBooksService.AddGradeByCourseIdAndUserIdAsync(id, request.User.Id);
         return NoContent();
     }
 

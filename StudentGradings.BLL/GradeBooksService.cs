@@ -37,14 +37,14 @@ public class GradeBooksService : IGradeBooksService
 
     public async Task<Guid> AddGradeBookAsync(GradeBookModel gradeBookModel)
     {
-        var newGradeBook = _mapper.Map<GradeBookDto>(gradeBookModel);
-        if (newGradeBook == null)
-            throw new EntityNotFoundException($"GradeBook {gradeBookModel} was not found.");
+        if (gradeBookModel == null)
+            throw new EntityNotFoundException($"gradeBookModel not found.");
 
+        var newGradeBook = _mapper.Map<GradeBookDto>(gradeBookModel);
         return await _gradeBooksRepository.AddGradeBookAsync(newGradeBook);
     }
 
-    public async Task AddGradeByCourseIdAsync(Guid courseId, Guid userId)
+    public async Task AddGradeByCourseIdAndUserIdAsync(Guid courseId, Guid userId)
     {
         var gradeBook = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (gradeBook != null)
@@ -70,17 +70,20 @@ public class GradeBooksService : IGradeBooksService
             User = user
         };
 
-        await _gradeBooksRepository.AddGradeByCourseIdAsync(newGradeBook);
+        await _gradeBooksRepository.AddGradeByCourseIdAndUserIdAsync(newGradeBook);
     }
 
-    public async Task UpdateGradeByCourseIdAsync(Guid courseId, Guid userId, GradeBookModel gradeBook)
+    public async Task UpdateGradeByCourseIdAndUserIdAsync(Guid courseId, Guid userId, GradeBookModel gradeBook)
     {
+        if (gradeBook == null)
+            throw new EntityNotFoundException($"gradeBook not found.");
+
         var book = await _gradeBooksRepository.GetGradeBookAsync(courseId, userId);
         if (book == null)
-            throw new EntityNotFoundException($"GradeBook with course id {gradeBook.CourseId} and user id {gradeBook.UserId} was not found.");
+            throw new EntityNotFoundException($"GradeBook with course {courseId} and user {userId} was not found.");
 
         var newGradeBook = _mapper.Map<GradeBookDto>(gradeBook);
-        await _gradeBooksRepository.UpdateGradeByCourseIdAsync(book, newGradeBook.Grade);
+        await _gradeBooksRepository.UpdateGradeByCourseIdAndUserIdAsync(book, newGradeBook.Grade);
     }
 
     public async Task<GradeBookModel> GetGradeBookAsync(Guid courseId, Guid userId)
@@ -92,13 +95,35 @@ public class GradeBooksService : IGradeBooksService
         return _mapper.Map<GradeBookModel>(gradebook);
     }
 
-    public async Task<IEnumerable<GradeBookModel>> GetGradesByCourseIdAsync(Guid courseId)
+    public async Task<List<GradeBookModel>> GetGradesByCourseIdAsync(Guid courseId)
     {
-        var grades = await _gradeBooksRepository.GetGradesByCourseIdAsync(courseId);
-        if (grades == null || !grades.Any())
-            return Enumerable.Empty<GradeBookModel>();
+        var gradesCourse = await _gradeBooksRepository.GetGradesByCourseIdAsync(courseId);
+        if (gradesCourse == null)
+            throw new EntityNotFoundException($"GradeCourse with id {courseId} was not found.");
 
-        var result = grades.Select(g => _mapper.Map<GradeBookModel>(g));
-        return result;
+        return _mapper.Map<List<GradeBookModel>>(gradesCourse);
+    }
+
+    public async Task<List<GradeBookModel>> GetAllGradesByCoursesAsync()
+    {
+        var allGrades = await _gradeBooksRepository.GetAllGradesWithCoursesAsync();
+        if (allGrades == null || !allGrades.Any())
+            throw new EntityNotFoundException($"Grades was not found.");
+
+        return _mapper.Map<List<GradeBookModel>>(allGrades);
+    }
+
+    public async Task DeleteGradeByCourseIdAndUserIdAsync(Guid courseId, Guid userId)
+    {
+        var gradeExists = await _gradeBooksRepository.GradeExistsByCourseIdAndUserIdAsync(courseId, userId);
+
+        if (gradeExists)
+        {
+            await _gradeBooksRepository.DeleteGradeByCourseIdAndUserIdAsync(courseId, userId);
+        }
+        else
+        {
+            throw new EntityNotFoundException($"Grade for course {courseId} and user {userId} not found.");
+        }
     }
 }

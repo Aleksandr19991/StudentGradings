@@ -15,9 +15,10 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
 
     public async Task UpdateCourseAsync(CourseDto course, CourseDto changeCourse)
     {
-        course.Name = changeCourse.Name;
-        course.Description = changeCourse.Description;
-        course.Hours = changeCourse.Hours;
+        var existingCourse = await context.Courses.FirstOrDefaultAsync(c => c.Id == course.Id);
+        existingCourse.Name = changeCourse.Name;
+        existingCourse.Description = changeCourse.Description;
+        existingCourse.Hours = changeCourse.Hours;
         await context.SaveChangesAsync();
     }
 
@@ -25,7 +26,7 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
 
     public async Task<List<CourseDto>> GetAllCoursesAsync()
     {
-        return await context.Courses.Where(c => c.IsDeactivated == false).ToListAsync();
+        return await context.Courses.Where(c => c.IsDeactivated == false).ToListAsync() ?? new List<CourseDto>();
     }
 
     public async Task<CourseDto?> GetCourseWithUsersAndGradesAsync(Guid id) =>
@@ -43,7 +44,7 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
 
     public async Task DeleteCourseAsync(CourseDto course)
     {
-        var courseToRemove = await context.Courses.FindAsync(course.Id);
+        var courseToRemove = await context.Courses.FirstOrDefaultAsync(c => c.Id == course.Id);
         context.Courses.Remove(courseToRemove);
         await context.SaveChangesAsync();
     }
