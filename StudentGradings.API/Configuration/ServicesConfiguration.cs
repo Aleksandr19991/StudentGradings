@@ -14,7 +14,7 @@ namespace StudentGradings.API.Configuration
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
+            //services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
             services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
         }
     }

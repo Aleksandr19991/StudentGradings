@@ -1,6 +1,6 @@
 ﻿namespace StudentGradings.API.Models.Requests;
 
-public class CreateGradeBookRequest
+public class CreateGradeRequest
 {
     public Guid UserId { get; set; }
     public Guid CourseId { get; set; }

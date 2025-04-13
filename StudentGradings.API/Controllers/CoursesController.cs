@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
+using StudentGradings.BLL.Exeptions;
 using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Models;
 
@@ -15,87 +16,76 @@ public class CoursesController(
     IMapper mapper
 ) : ControllerBase
 {
+    //[CustomAuthorize([UserRole.Administrator])]
     // POST api/<CoursesController>
     [HttpPost]
-    //[CustomAuthorize([UserRole.Administrator])]
     public async Task<ActionResult<Guid>> CreateCourseAsync([FromBody] CreateCourseRequest request)
     {
-        var courseId = mapper.Map<CourseModel>(request);
-        var addedCourseId = await coursesService.AddCourseAsync(courseId);
+        var courseModel = mapper.Map<CourseModel>(request);
+        var addedCourseId = await coursesService.AddCourseAsync(courseModel);
         return Ok(addedCourseId);
     }
 
-    // POST api/<CoursesController>
-    [HttpPost("gradeBook")]
-    //[CustomAuthorize([UserRole.Administrator])]
-    public async Task<ActionResult<Guid>> CreateGradeBookAsync([FromBody] CreateGradeBookRequest request)
-    {
-        var gradeBookId = mapper.Map<GradeBookModel>(request);
-        var addedGradeBookId = await gradeBooksService.AddGradeBookAsync(gradeBookId);
-        return Ok(addedGradeBookId);
-    }
-
-    //POST api/<CoursesController>
-    [HttpPost("grade")]
     //[CustomAuthorize([UserRole.Teacher])]
-    public async Task<IActionResult> AddGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] AddGradeRequest request)
+    //POST api/courses/{courseId}/grades
+    [HttpPost("courses/{id}/grades")]
+    public async Task<IActionResult> AddGradeByCourseIdAsync([FromRoute] Guid courseId, [FromBody] AddGradeRequest request)
     {
-        await gradeBooksService.AddGradeByCourseIdAndUserIdAsync(id, request.User.Id);
-        return NoContent();
+        await gradeBooksService.AddGradeByCourseIdAndUserIdAsync(courseId, request.User.Id, request.Grade);
+        return Ok("Grade added successfully");
     }
 
+    //[CustomAuthorize([UserRole.Teacher])]
     //GET api/<CoursesController>
-    [HttpGet("{id}/users")]
-    //[CustomAuthorize([UserRole.Teacher])]
+    [HttpGet("{id}/courses")]
     public async Task<ActionResult<List<CourseWithUsersAndGradesResponse>>> GetCourseWithUsersAndGradesAsync([FromRoute] Guid id)
     {
-        var users = await coursesService.GetCourseWithUsersAndGradesAsync(id);
-        var students = mapper.Map<List<CourseWithUsersAndGradesResponse>>(users);
+        var courses = await coursesService.GetCourseWithUsersAndGradesAsync(id);
+        var students = mapper.Map<List<CourseWithUsersAndGradesResponse>>(courses);
         return Ok(students);
     }
 
-    //GET api/<CoursesController>
-    [HttpGet("{id}/grades")]
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
-    public async Task<ActionResult<List<GradeBookResponse>>> GetGradesByCoursesIdAsync([FromRoute] Guid id)
+    //GET api/courses/{id}/grades
+    [HttpGet("{id}/grades")]
+    public async Task<ActionResult<List<GradeBookResponse>>> GetGradesByCourseIdAsync([FromRoute] Guid id)
     {
         var grades = await gradeBooksService.GetGradesByCourseIdAsync(id);
         var gradeCourse = mapper.Map<List<GradeBookResponse>>(grades);
         return Ok(gradeCourse);
     }
 
-    // PUT api/courses/5
-    [HttpPut("{id}/course")]
-    //[CustomAuthorize([UserRole.Administrator])]
+    ////[CustomAuthorize([UserRole.Administrator])]
+    // PUT api/courses/{id}
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCourseAsync([FromRoute] Guid id, [FromBody] UpdateCourseRequest request)
     {
-        var course = mapper.Map<CourseModel>(request);
-        await coursesService.UpdateCourseAsync(id, course);
-        return NoContent();
+            var course = mapper.Map<CourseModel>(request);
+            await coursesService.UpdateCourseAsync(id, course);
+            return NoContent();
     }
 
-    // DELETE api/users/5
-    [HttpDelete("{id}")]
     //[CustomAuthorize([UserRole.Administrator])]
+    // DELETE api/courses/{id}
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourseAsync([FromRoute] Guid id)
     {
         await coursesService.DeleteCourseAsync(id);
         return NoContent();
     }
 
-    //// PATCH api/<UsersController>
-    //[HttpPatch("{id}/grade")]
-    ////[CustomAuthorize([UserRole.Teacher])]
-    //public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid id, [FromBody] UpdateGradeByCourseRequest request, Guid courseId)
-    //{
-    //    var grade = mapper.Map<GradeBookModel>(request);
-    //    await gradeBooksService.UpdateGradeByCourseIdAsync(id, grade);
-    //    return NoContent();
-    //}
+    //[CustomAuthorize([UserRole.Teacher])]
+    // PATCH api/<CoursesController>
+    [HttpPatch("courses/{courseId}/grade")]
+    public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid courseId, [FromBody] UpdateGradeByCourseRequest request)
+    {
+        await gradeBooksService.UpdateGradeByCourseIdAndUserIdAsync(courseId, request.User.Id, request.Grade);
+        return NoContent();
+    }
 
-    // PATCH api/<UsersController>
-    [HttpPatch("{id}/deactivate")]
     //[CustomAuthorize([UserRole.Administrator])]
+    // PATCH api/<CoursesController>
+    [HttpPatch("{id}/deactivate")]
     public async Task<IActionResult> DeactivateCourseAsync([FromRoute] Guid id)
     {
         await coursesService.DeactivateCourseAsync(id);

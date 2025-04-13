@@ -10,6 +10,7 @@ public class UserModel
     public string Phone { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public bool IsDeactevated { get; set; }
     public UserRole Role { get; set; }
     public GradeBookModel? GradeBook { get; set; }
 }

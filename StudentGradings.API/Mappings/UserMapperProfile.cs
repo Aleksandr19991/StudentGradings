@@ -15,7 +15,9 @@ public class UserMapperProfile : Profile
         CreateMap<UserModel, UserWithCoursesAndGradesResponse>();
         CreateMap<LoginRequest, UserModel>();
         CreateMap<UserModel, AuthenticatedResponse>();
-        CreateMap<AddGradeRequest, GradeBookResponse>();
+        CreateMap<UpdateUserRequest, UserModel>();
+        CreateMap<UserModel, UserResponse>();
+        //CreateMap<AddGradeRequest, GradeBookResponse>();
         CreateMap<UserRole, UserModel>();
         CreateMap<UserModel, UserResponse>();
     }
