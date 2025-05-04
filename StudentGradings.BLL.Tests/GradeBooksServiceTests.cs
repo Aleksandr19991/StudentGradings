@@ -9,17 +9,17 @@ namespace StudentGradings.BLL.Tests;
 
 public class GradeBooksServiceTests
 {
-    private Mock<ICoursesRepository> _coursesRepositoryMock;
-    private Mock<IUsersRepository> _usersRepositoryMock;
-    private Mock<IGradeBooksRepository> _gradeBooksRepositoryMock;
-    private GradeBooksService _sut;
-    public GradeBooksServiceTests()
-    {
-        _coursesRepositoryMock = new Mock<ICoursesRepository>();
-        _usersRepositoryMock = new Mock<IUsersRepository>();
-        _gradeBooksRepositoryMock = new Mock<IGradeBooksRepository>();
-        _sut = new GradeBooksService(_gradeBooksRepositoryMock.Object, _coursesRepositoryMock.Object, _usersRepositoryMock.Object);
-    }
+    //private Mock<ICoursesRepository> _coursesRepositoryMock;
+    //private Mock<IUsersRepository> _usersRepositoryMock;
+    //private Mock<IGradeBooksRepository> _gradeBooksRepositoryMock;
+    //private UserCoursesService _sut;
+    //public GradeBooksServiceTests()
+    //{
+    //    _coursesRepositoryMock = new Mock<ICoursesRepository>();
+    //    _usersRepositoryMock = new Mock<IUsersRepository>();
+    //    _gradeBooksRepositoryMock = new Mock<IGradeBooksRepository>();
+    //    _sut = new GradeBooksService(_gradeBooksRepositoryMock.Object, _coursesRepositoryMock.Object, _usersRepositoryMock.Object);
+    //}
 
     //[Fact]
     //public async Task AddGradeByCourseIdAsync_ExistingActiveCourseAndExistingActiveUser_StudentReceivedGrade()

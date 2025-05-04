@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentGradings.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class _InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,7 @@ namespace StudentGradings.DAL.Migrations
                     Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "character varying(90)", maxLength: 90, nullable: false),
                     Hours = table.Column<decimal>(type: "numeric", nullable: false),
+                    Semester = table.Column<string>(type: "text", nullable: false),
                     IsDeactivated = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -45,26 +46,26 @@ namespace StudentGradings.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GradeBooks",
+                name: "UserCourses",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CourseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Grade = table.Column<float>(type: "real", nullable: false),
-                    IsDeactivated = table.Column<bool>(type: "boolean", nullable: false)
+                    DateAssigned = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GradeBooks", x => new { x.UserId, x.CourseId });
+                    table.PrimaryKey("PK_UserCourses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GradeBooks_Courses_CourseId",
+                        name: "FK_UserCourses_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GradeBooks_Users_UserId",
+                        name: "FK_UserCourses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -72,9 +73,14 @@ namespace StudentGradings.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GradeBooks_CourseId",
-                table: "GradeBooks",
+                name: "IX_UserCourses_CourseId",
+                table: "UserCourses",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCourses_UserId",
+                table: "UserCourses",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -87,7 +93,7 @@ namespace StudentGradings.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GradeBooks");
+                name: "UserCourses");
 
             migrationBuilder.DropTable(
                 name: "Courses");

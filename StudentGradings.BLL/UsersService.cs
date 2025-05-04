@@ -99,19 +99,19 @@ public class UsersService : IUsersService
         return _mapper.Map<UserModel>(user);
     }
 
-    public async Task<List<UserModel>> GetAllUsersAsync()
+    public async Task<List<UserModelWithoutPassword>> GetAllUsersAsync()
     {
         var users = await _usersRepository.GetAllUsersAsync();
-        return _mapper.Map<List<UserModel>>(users);
+        return _mapper.Map<List<UserModelWithoutPassword>>(users);
     }
 
-    public async Task<UserModel> GetUserWithCoursesAndGradesAsync(Guid userId)
+    public async Task<UserModelWithoutPassword> GetUserWithCoursesAndGradesAsync(Guid userId)
     {
         var user = await _usersRepository.GetUserWithCoursesAndGradesAsync(userId);
         if (user == null)
             throw new EntityNotFoundException($"User with id {userId} was not found.");
 
-        return _mapper.Map<UserModel>(user);
+        return _mapper.Map<UserModelWithoutPassword>(user);
     }
 
     public async Task DeactivateUser(Guid id)

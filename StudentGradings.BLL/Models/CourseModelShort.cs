@@ -1,10 +1,11 @@
-﻿namespace StudentGradings.API.Models.Responses;
+﻿namespace StudentGradings.BLL.Models;
 
-public class CourseResponse
+public class CourseModelShort
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public string Hours { get; set; }
+    public decimal Hours { get; set; }
     public string Semester { get; set; }
+    public bool IsDeactivated { get; set; }
 }

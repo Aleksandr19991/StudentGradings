@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentGradings.API.Models.Requests;
 using StudentGradings.API.Models.Responses;
-using StudentGradings.BLL.Exeptions;
 using StudentGradings.BLL.Interfaces;
 using StudentGradings.BLL.Models;
 
@@ -12,7 +11,7 @@ namespace StudentGradings.API.Controllers;
 [Route("api/courses")]
 public class CoursesController(
     ICoursesService coursesService,
-    IGradeBooksService gradeBooksService,
+    IUserCoursesService userCoursesService,
     IMapper mapper
 ) : ControllerBase
 {
@@ -27,42 +26,56 @@ public class CoursesController(
     }
 
     //[CustomAuthorize([UserRole.Teacher])]
-    //POST api/courses/{courseId}/grades
-    [HttpPost("courses/{id}/grades")]
-    public async Task<IActionResult> AddGradeByCourseIdAsync([FromRoute] Guid courseId, [FromBody] AddGradeRequest request)
+    // POST: api/UserCourses/{courseId}/users/{userId}/grade
+    [HttpPost("{courseId}/users/{userId}/grade")]
+    public async Task<IActionResult> AddGrade(Guid userId, Guid courseId, [FromBody] GradeRequest request)
     {
-        await gradeBooksService.AddGradeByCourseIdAndUserIdAsync(courseId, request.User.Id, request.Grade);
-        return Ok("Grade added successfully");
+        await userCoursesService.AddGradeByUserIdAndCourseIdAsync(userId, courseId, request.Grade);
+        return Ok();
     }
 
-    //[CustomAuthorize([UserRole.Teacher])]
-    //GET api/<CoursesController>
-    [HttpGet("{id}/courses")]
-    public async Task<ActionResult<List<CourseWithUsersAndGradesResponse>>> GetCourseWithUsersAndGradesAsync([FromRoute] Guid id)
+    // GET: api/courses
+    [HttpGet]
+    public async Task<ActionResult<List<CourseModelShort>>> GetAllCourses()
     {
-        var courses = await coursesService.GetCourseWithUsersAndGradesAsync(id);
-        var students = mapper.Map<List<CourseWithUsersAndGradesResponse>>(courses);
-        return Ok(students);
+        var courses = await coursesService.GetAllCoursesAsync();
+        return Ok(courses);
     }
 
-    //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
-    //GET api/courses/{id}/grades
-    [HttpGet("{id}/grades")]
-    public async Task<ActionResult<List<GradeBookResponse>>> GetGradesByCourseIdAsync([FromRoute] Guid id)
+    ////[CustomAuthorize([UserRole.Teacher])]
+    //GET /api/usercourses/users/{userId}/courses/{courseId}/grades
+    [HttpGet("users/{userId}/courses/{courseId}/grades")]
+    public async Task<IActionResult> GetGradesByUserAndCourse(Guid userId, Guid courseId)
     {
-        var grades = await gradeBooksService.GetGradesByCourseIdAsync(id);
-        var gradeCourse = mapper.Map<List<GradeBookResponse>>(grades);
-        return Ok(gradeCourse);
+        var grades = await userCoursesService.GetGradesByCourseIdAsync(userId, courseId);
+        var response = mapper.Map<List<UserCourseResponse>>(grades);
+        return Ok(response);
     }
 
-    ////[CustomAuthorize([UserRole.Administrator])]
+    // GET: api/usercourses/grades/{userId}
+    [HttpGet("grades/{userId}")]
+    public async Task<IActionResult> GetAllGradesByUserId(Guid userId)
+    {
+        var grades = await userCoursesService.GetAllGradesByUserIdAsync(userId);
+        return Ok(grades);
+    }
+
     // PUT api/courses/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCourseAsync([FromRoute] Guid id, [FromBody] UpdateCourseRequest request)
     {
-            var course = mapper.Map<CourseModel>(request);
-            await coursesService.UpdateCourseAsync(id, course);
-            return NoContent();
+        var course = mapper.Map<CourseModel>(request);
+        await coursesService.UpdateCourseAsync(id, course);
+        return NoContent();
+    }
+
+    //[CustomAuthorize([UserRole.Teacher])]
+    // PUT api/usercourses/{userId}/{courseId}/grade
+    [HttpPut("{userId:guid}/{courseId:guid}/grade")]
+    public async Task<IActionResult> UpdateGrade(Guid userId, Guid courseId, [FromBody] UpdateGradeRequest request)
+    {
+        await userCoursesService.UpdateGradeByCourseIdAndUserIdAsync(userId, courseId, request.Grade);
+        return NoContent();
     }
 
     //[CustomAuthorize([UserRole.Administrator])]
@@ -74,12 +87,11 @@ public class CoursesController(
         return NoContent();
     }
 
-    //[CustomAuthorize([UserRole.Teacher])]
-    // PATCH api/<CoursesController>
-    [HttpPatch("courses/{courseId}/grade")]
-    public async Task<IActionResult> UpdateGradeByCourseIdAsync([FromRoute] Guid courseId, [FromBody] UpdateGradeByCourseRequest request)
+    // DELETE api/grades/{userId}/{courseId}
+    [HttpDelete("{userId:guid}/{courseId:guid}")]
+    public async Task<IActionResult> DeleteGrade(Guid userId, Guid courseId)
     {
-        await gradeBooksService.UpdateGradeByCourseIdAndUserIdAsync(courseId, request.User.Id, request.Grade);
+        await userCoursesService.DeleteGradeByCourseIdAndUserIdAsync(userId, courseId);
         return NoContent();
     }
 

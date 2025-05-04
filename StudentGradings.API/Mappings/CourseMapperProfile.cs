@@ -11,9 +11,10 @@ namespace StudentGradings.API.Mappings
         {
             CreateMap<CreateCourseRequest, CourseModel>();
             CreateMap<CourseModel, CourseResponse>();
-            CreateMap<CourseModel, CourseWithUsersAndGradesResponse>();
+            CreateMap<CourseModel, CourseWithGradeResponse>();
             CreateMap<UpdateCourseRequest, CourseModel>();
-            CreateMap<CourseModel, CourseResponse>();
+            CreateMap<CreateGradeRequest, UserCourseModel>();
+            CreateMap<UserCourseModel, UserCourseResponse>();
         }
     }
 }

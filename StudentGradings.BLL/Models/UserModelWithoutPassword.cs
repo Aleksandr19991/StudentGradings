@@ -1,8 +1,8 @@
 ﻿using StudentGradings.CORE;
 
-namespace StudentGradings.API.Models.Responses;
+namespace StudentGradings.BLL.Models;
 
-public class UserResponse
+public class UserModelWithoutPassword
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -11,5 +11,4 @@ public class UserResponse
     public string Email { get; set; }
     public bool IsDeactivated { get; set; }
     public UserRole Role { get; set; }
-    public List<CourseWithGradeResponse> Courses { get; set; } = new List<CourseWithGradeResponse>();
 }

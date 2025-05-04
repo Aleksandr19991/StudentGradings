@@ -8,7 +8,7 @@ public class StudentGradingsContext : DbContext
 {
     public DbSet<UserDto> Users { get; set; }
     public DbSet<CourseDto> Courses { get; set; }
-    public DbSet<GradeBookDto> GradeBooks { get; set; }
+    public DbSet<UserCourseDto> UserCourses { get; set; }
 
     public StudentGradingsContext(DbContextOptions<StudentGradingsContext> opts) : base(opts)
     {
@@ -18,6 +18,6 @@ public class StudentGradingsContext : DbContext
     {
         modelBuilder.AddCourseEntityConfiguration();
         modelBuilder.AddUserEntityConfiguration();
-        modelBuilder.AddGradeBookEntityConfiguration();
+        modelBuilder.AddUserCourseEntityConfiguration();
     }
 }

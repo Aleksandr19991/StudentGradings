@@ -9,8 +9,8 @@ namespace StudentGradings.BLL.Interfaces
         Task UpdateUserAsync(Guid id, UserModel user);
         Task UpdatePasswordAsync(Guid id, string newPassword);
         Task<UserModel> GetUserByIdAsync(Guid id);
-        Task<List<UserModel>> GetAllUsersAsync();
-        Task<UserModel> GetUserWithCoursesAndGradesAsync(Guid userId);
+        Task<List<UserModelWithoutPassword>> GetAllUsersAsync();
+        Task<UserModelWithoutPassword> GetUserWithCoursesAndGradesAsync(Guid userId);
         Task DeactivateUser(Guid id);
         Task DeleteUserAsync(Guid id);
     }

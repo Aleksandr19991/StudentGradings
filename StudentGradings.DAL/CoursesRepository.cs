@@ -19,6 +19,7 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
         existingCourse.Name = changeCourse.Name;
         existingCourse.Description = changeCourse.Description;
         existingCourse.Hours = changeCourse.Hours;
+        existingCourse.Semester = changeCourse.Semester;
         await context.SaveChangesAsync();
     }
 
@@ -31,7 +32,7 @@ public class CoursesRepository(StudentGradingsContext context) : ICoursesReposit
 
     public async Task<CourseDto?> GetCourseWithUsersAndGradesAsync(Guid id) =>
         await context.Courses
-        .Include(c => c.GradeBooks)
+        .Include(c => c.UserCourses)
         .ThenInclude(c => c.User)
         .SingleOrDefaultAsync(c => c.Id == id);
 

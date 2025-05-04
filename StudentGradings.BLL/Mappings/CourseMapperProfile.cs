@@ -10,5 +10,6 @@ public class CourseMapperProfile : Profile
     {
         CreateMap<CourseModel, CourseDto>();
         CreateMap<CourseDto, CourseModel>();
+        CreateMap<CourseDto, CourseModelShort>();
     }
 }

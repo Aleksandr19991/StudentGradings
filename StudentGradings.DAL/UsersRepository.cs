@@ -47,7 +47,7 @@ public class UsersRepository(StudentGradingsContext context) : IUsersRepository
 
     public async Task<UserDto?> GetUserWithCoursesAndGradesAsync(Guid id) =>
         await context.Users
-        .Include(c => c.GradeBooks)
+        .Include(c => c.UserCourses)
         .ThenInclude(c => c.Course)
         .SingleOrDefaultAsync(c => c.Id == id);
 

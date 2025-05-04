@@ -22,5 +22,9 @@ internal static class CourseEntityConfiguration
         modelBuilder.Entity<CourseDto>()
             .Property(c => c.Hours)
             .IsRequired();
+
+        modelBuilder.Entity<CourseDto>()
+            .Property(c => c.Semester)
+            .IsRequired();
     }
 }

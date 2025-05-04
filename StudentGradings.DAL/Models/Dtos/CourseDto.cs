@@ -6,6 +6,7 @@ public class CourseDto
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Hours { get; set; }
+    public string Semester { get; set; }
     public bool IsDeactivated { get; set; }
-    public ICollection<GradeBookDto> GradeBooks { get; set; } = [];
+    public ICollection<UserCourseDto> UserCourses { get; set; } = new List<UserCourseDto>();
 }

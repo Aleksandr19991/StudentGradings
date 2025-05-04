@@ -43,17 +43,22 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
         }
     }
 
+    // GET: api/users
+    [HttpGet]
+    public async Task<ActionResult<List<UserModel>>> GetAllUsers()
+    {
+        var users = await usersService.GetAllUsersAsync();
+        return Ok(users);
+    }
+
     //[CustomAuthorize([UserRole.Teacher, UserRole.Student])]
-    //GET api/users/5
+    // GET api/users/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserWithCoursesAndGradesResponse>> GetUserWithCoursesAndGradesAsync([FromRoute] Guid id)
+    public async Task<ActionResult<UserResponse>> GetUserWithCoursesAndGrades(Guid id)
     {
         var user = await usersService.GetUserWithCoursesAndGradesAsync(id);
-        var userGrade = mapper.Map<UserWithCoursesAndGradesResponse>(user);
-        return Ok(userGrade);
-
-        //var teacherId = Guid.NewGuid();
-        //var studentId = Guid.NewGuid();
+        var response = mapper.Map<UserResponse>(user);
+        return Ok(response);
     }
 
     //[Authorize]
@@ -62,9 +67,6 @@ public class UsersController(IUsersService usersService, IMapper mapper) : Contr
     public async Task<IActionResult> UpdateUserAsync([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
         var user = await usersService.GetUserByIdAsync(id);
-        //if (user == null || usersService.IsUserAuthorizedAsync(id))
-        //    return Forbid();
-
         var updateUser = mapper.Map<UserModel>(request);
         await usersService.UpdateUserAsync(id, updateUser);
         return NoContent();

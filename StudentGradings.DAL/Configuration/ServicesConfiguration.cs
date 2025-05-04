@@ -12,6 +12,6 @@ public static class ServicesConfiguration
         services.AddDbContext<StudentGradingsContext>(options => options.UseNpgsql(configuration.GetConnectionString("StudentGradingsDbConnection")));
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<ICoursesRepository, CoursesRepository>();
-        services.AddScoped<IGradeBooksRepository, GradeBooksRepository>();
+        services.AddScoped<IUserCoursesRepository, UserCoursesRepository>();
     }
 }

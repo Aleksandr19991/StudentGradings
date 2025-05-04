@@ -12,8 +12,8 @@ using StudentGradings.DAL;
 namespace StudentGradings.DAL.Migrations
 {
     [DbContext(typeof(StudentGradingsContext))]
-    [Migration("20250413135938_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250503204808__InitialCreate")]
+    partial class _InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,33 +47,40 @@ namespace StudentGradings.DAL.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
+                    b.Property<string>("Semester")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Courses", (string)null);
                 });
 
-            modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.GradeBookDto", b =>
+            modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.UserCourseDto", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("DateAssigned")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<float>("Grade")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsDeactivated")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("UserId", "CourseId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("GradeBooks", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCourses", (string)null);
                 });
 
             modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.UserDto", b =>
@@ -121,16 +128,16 @@ namespace StudentGradings.DAL.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.GradeBookDto", b =>
+            modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.UserCourseDto", b =>
                 {
                     b.HasOne("StudentGradings.DAL.Models.Dtos.CourseDto", "Course")
-                        .WithMany("GradeBooks")
+                        .WithMany("UserCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("StudentGradings.DAL.Models.Dtos.UserDto", "User")
-                        .WithMany("GradeBooks")
+                        .WithMany("UserCourses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -142,12 +149,12 @@ namespace StudentGradings.DAL.Migrations
 
             modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.CourseDto", b =>
                 {
-                    b.Navigation("GradeBooks");
+                    b.Navigation("UserCourses");
                 });
 
             modelBuilder.Entity("StudentGradings.DAL.Models.Dtos.UserDto", b =>
                 {
-                    b.Navigation("GradeBooks");
+                    b.Navigation("UserCourses");
                 });
 #pragma warning restore 612, 618
         }

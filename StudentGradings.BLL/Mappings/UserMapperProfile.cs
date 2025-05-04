@@ -9,9 +9,18 @@ public class UserMapperProfile : Profile
 {
     public UserMapperProfile()
     {
-        CreateMap<UserModel, UserDto>();
-        CreateMap<UserDto, UserModel>();
-        CreateMap<UserRole, UserDto>();
-        CreateMap<UserDto, UserRole>();
+        CreateMap<UserDto, UserModel>()
+            .ForMember(dest => dest.UserCourses, opt => opt.MapFrom(src => src.UserCourses));
+
+        CreateMap<UserDto, UserModelWithoutPassword>();
+
+        CreateMap<UserModel, UserDto>()
+            .ForMember(dest => dest.UserCourses, opt => opt.MapFrom(src => src.UserCourses));
+
+        CreateMap<UserCourseDto, UserCourseModel>()
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
+            .ForMember(dest => dest.Course, opt => opt.MapFrom(src => src.Course));
+
+        CreateMap<CourseDto, CourseModel>();
     }
 }
