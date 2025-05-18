@@ -53,6 +53,12 @@ public class UserCoursesService : IUserCoursesService
         if (grade < 0 || grade > 5)
             throw new EntityConflictException($"Grade {grade}, must be between 0 and 5");
 
+        var existingUserCourse = await _userCoursesRepository.GetUserCourseAsync(userId, courseId);
+        if (existingUserCourse != null && existingUserCourse.Grade.HasValue)
+        {
+            throw new EntityConflictException($"Grade with user id {userId} and course id {courseId} already exists.");
+        }
+
         await _userCoursesRepository.AddGradeByUserIdAndCourseIdAsync(userId, courseId, grade);
     }
 

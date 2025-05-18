@@ -30,9 +30,9 @@ public class UserCoursesRepository(StudentGradingsContext context) : IUserCourse
         await context.SaveChangesAsync();
     }
 
-    public async Task<UserCourseDto?> GetUserCourseAsync(Guid courseId, Guid userId)
+    public async Task<UserCourseDto?> GetUserCourseAsync(Guid userId, Guid courseId)
     {
-        return await context.UserCourses.FirstOrDefaultAsync(c => c.Course.Id == courseId && c.User.Id == userId);
+        return await context.UserCourses.FirstOrDefaultAsync(c => c.User.Id == userId && c.Course.Id == courseId);
     }
 
     public async Task<List<UserCourseDto>> GetGradesByCourseIdAsync(Guid userId, Guid courseId)
