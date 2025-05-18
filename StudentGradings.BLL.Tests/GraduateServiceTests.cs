@@ -2,7 +2,6 @@
 using Moq;
 using Moq.Protected;
 using StudentGradings.BLL.Interfaces;
-using StudentGradings.BLL.Models;
 using StudentGradings.BLL.Models.UserGraduate;
 using System.Net;
 using System.Text.Json;

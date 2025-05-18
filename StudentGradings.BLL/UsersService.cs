@@ -39,9 +39,7 @@ public class UsersService : IUsersService
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, "Teacher"),
-                new Claim(ClaimTypes.Role, "Student"),
-                new Claim(ClaimTypes.Role, "Administrator")
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using StudentGradings.CORE;
+using System.Security.Claims;
 using System.Text;
 
 namespace StudentGradings.API.Configuration;
@@ -25,7 +26,8 @@ internal static class AddAuthConfiguration
                ValidateIssuerSigningKey = true,
                ValidIssuer = ConstantAuth.Issuer,
                ValidAudience = ConstantAuth.Audience,
-               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key))
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConstantAuth.Key)),
+               RoleClaimType = ClaimTypes.Role
            };
        });
     }
